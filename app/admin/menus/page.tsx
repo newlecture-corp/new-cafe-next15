@@ -1,4 +1,4 @@
-export default function AdminMenusPage() {
+export default function MenuListPage() {
   return (
     <main>
       <section>

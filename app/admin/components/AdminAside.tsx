@@ -1,20 +1,21 @@
 import React from "react";
+import Link from "next/link";
 
 export default function AdminAside() {
   return (
     <aside className="">
       <header className="n-aside-menu">
         <h1 className="d:none">
-          <a href="">관리자 메뉴</a>
+          <Link href="">관리자 메뉴</Link>
         </h1>
         <ul>
           <li className="">
-            <a
+            <Link
               className="n-icon n-icon:dashboard n-deco n-deco-pos:top lg:n-deco-pos:left"
-              href="/admin/index.html"
+              href="/admin"
             >
               대시보드
-            </a>
+            </Link>
           </li>
         </ul>
       </header>
@@ -22,20 +23,20 @@ export default function AdminAside() {
         <h1>재품관리</h1>
         <ul>
           <li className="active">
-            <a
+            <Link
               className="n-icon n-icon:local_cafe n-deco n-deco-pos:top lg:n-deco-pos:left"
-              href="/admin/menu/list.html"
+              href="/admin/menus"
             >
               메뉴관리
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               className="n-icon n-icon:garage_home n-deco n-deco-pos:top lg:n-deco-pos:left"
               href="/admin/supplies/list.html"
             >
               비품관리
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
@@ -43,20 +44,20 @@ export default function AdminAside() {
         <h1>고객관리</h1>
         <ul>
           <li>
-            <a
+            <Link
               className="n-icon n-icon:notifications n-deco n-deco-pos:top lg:n-deco-pos:left"
               href="/admin/notice/list.html"
             >
               공지관리
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               className="n-icon n-icon:group n-deco n-deco-pos:top lg:n-deco-pos:left"
               href="/admin/member/list.html"
             >
               회원관리
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
@@ -64,20 +65,20 @@ export default function AdminAside() {
         <h1>통계관리</h1>
         <ul>
           <li>
-            <a
+            <Link
               className="n-icon n-icon:cardio_load n-deco n-deco-pos:top lg:n-deco-pos:left"
               href=""
             >
               좋아요
-            </a>
+            </Link>
           </li>
           <li>
-            <a
+            <Link
               className="n-icon n-icon:bookmarks n-deco n-deco-pos:top lg:n-deco-pos:left"
               href=""
             >
               찜목록
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

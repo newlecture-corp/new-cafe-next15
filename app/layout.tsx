@@ -1,5 +1,7 @@
-// import './globals.css';
 "use client";
+import "newtil-css/dist/style.min.css";
+import './global.css';
+
 import { ReactNode } from 'react';
 
 type LayoutProps = {
@@ -18,13 +20,8 @@ export default function RootLayout({ children }: LayoutProps) {
                     crossOrigin="anonymous"
                     as="style"
                     href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
-                />
-                <link
-                    rel="stylesheet"
-                    crossOrigin="anonymous"
-                    href="https://cdn.jsdelivr.net/npm/newtil-css@0.2.13/dist/style.min.css"
-                />
-                <link rel="stylesheet" href="/css/style.css" type="text/css" />
+                />               
+                
             </head>
             <body>                
                 {children}
