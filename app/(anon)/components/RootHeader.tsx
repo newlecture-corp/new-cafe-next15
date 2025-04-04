@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const RootHeader = () => {
     return (
-        <header>
+        <header className="n-header">
             <h1>My Application</h1>
             <nav>
                 <ul>
