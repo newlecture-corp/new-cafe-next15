@@ -1,14 +1,15 @@
+import { MenuListDto } from '@/application/usecases/admin/menu/dto/MenuListDto';
+import MenuListUsecase from '@/application/usecases/admin/menu/MenuListUsecase';
+import { SbMenuRepository } from '@/infra/repositories/supabase/SbMenuRepository';
 import { NextResponse } from 'next/server';
 
 export async function GET() {
     try {
-        // Example response data
-        const menus = [
-            { id: 1, name: 'Menu 1', description: 'Description for Menu 1' },
-            { id: 2, name: 'Menu 2', description: 'Description for Menu 2' },
-        ];
+        const menuRepository = new SbMenuRepository();
+        const menuListUsecase = new MenuListUsecase(menuRepository);
+        const menuListDto:MenuListDto = await menuListUsecase.execute();
 
-        return NextResponse.json(menus, { status: 200 });
+        return NextResponse.json(menuListDto, { status: 200 });
     } catch (error) {
         console.error('Error fetching menus:', error);
         return NextResponse.json({ error: 'Failed to fetch menus' }, { status: 500 });
