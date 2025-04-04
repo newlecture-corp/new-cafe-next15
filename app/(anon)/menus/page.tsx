@@ -1,8 +1,11 @@
-// "use client";
+
 import Link from 'next/link';
 import React, { FC, JSX } from 'react';
 
 const MenuPage: FC = (): JSX.Element => {
+
+  
+
     return (
       <main>
         목록페이지
