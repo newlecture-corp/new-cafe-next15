@@ -18,7 +18,13 @@ async findById(id: number): Promise<Menu> {
   async findAll(): Promise<Menu[]> {
     const supabase = await createClient();
     const { data } = await supabase.from("menu").select();
-    const menus: Menu[] = data || [];
+    console.log("Fetched menus:", data);
+    const menus: Menu[] = data?.map(m => ({
+        id: m.id,
+        korName: m.kor_name,
+        engName: m.eng_name,
+        price: m.price,
+    })) || [];
   
     // Implement logic to fetch all menus from Supabase
     return menus;
