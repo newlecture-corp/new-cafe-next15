@@ -1,15 +1,50 @@
-.n-header{
-    background-color: yellow;
+.header {
+    flex-shrink: 0;
+    height: 60px;
+    background-color: var(--color-base-9);
+    padding: 0 30px;
 
-    >nav{
-        display: flex;
-        justify-content: space-between;
+    display: flex;
+    align-items: center;
+
+    >h1 {
+        color: var(--color-base-1);
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .top-mobile-menu {
+        margin-left: auto;
+    }
+
+    >.top-menu {
+        display: none;
         align-items: center;
-        padding: 0 20px;
-        height: 60px;
+
+        ul {
+            display: flex;
+            align-items: center;
+        }
     }
 }
 
-.a{
-    background-color: red;
+.n-icon-list {
+    color: var(--color-base-1);
+
+}
+
+@media (min-width: 922px) {
+    .header {
+        height: 80px;
+
+        >.top-mobile-menu {
+            display: none;
+        }
+
+        >.top-menu {
+            margin-left: auto;
+
+            display: flex;
+        }
+    }
 }

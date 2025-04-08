@@ -18,12 +18,12 @@ export default function AdminHeader() {
           <h1 className="d:none">헤더메뉴</h1>
           <ul className="n-bar">
             <li>
-              <Link className="n-btn" href="">
+              <Link className="n-btn" href="/admin">
                 대시보드
               </Link>
             </li>
             <li>
-              <Link className="n-btn" href="">
+              <Link className="n-btn" href="/logout">
                 로그아웃
               </Link>
             </li>

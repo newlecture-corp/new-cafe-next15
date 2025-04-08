@@ -33,7 +33,7 @@ export default function AdminAside() {
           <li>
             <Link
               className="n-icon n-icon:garage_home n-deco n-deco-pos:top lg:n-deco-pos:left"
-              href="/admin/supplies/list.html"
+              href="/admin/supplies"
             >
               비품관리
             </Link>
@@ -46,7 +46,7 @@ export default function AdminAside() {
           <li>
             <Link
               className="n-icon n-icon:notifications n-deco n-deco-pos:top lg:n-deco-pos:left"
-              href="/admin/notice/list.html"
+              href="/admin/notices"
             >
               공지관리
             </Link>
@@ -54,7 +54,7 @@ export default function AdminAside() {
           <li>
             <Link
               className="n-icon n-icon:group n-deco n-deco-pos:top lg:n-deco-pos:left"
-              href="/admin/member/list.html"
+              href="/admin/members"
             >
               회원관리
             </Link>
