@@ -3,6 +3,7 @@ import { GetMenuListUsecase } from "@/application/usecases/admin/menu/GetMenuLis
 import { SbMenuRepository } from "@/infra/repositories/supabase/SbMenuRepository";
 import { SbImageRepository } from "@/infra/repositories/supabase/SbImageRepository";
 import { NextResponse } from "next/server";
+import { GetMenuListQueryDto } from "@/application/usecases/admin/menu/dto/GetMenuListQueryDto";
 
 export async function GET(request: Request) {
 	try {
@@ -10,7 +11,7 @@ export async function GET(request: Request) {
 		const url = new URL(request.url);
 		const pageParam = url.searchParams.get("p") || "1"; // Default to page 1 if not provided
 		const searchWordParam = url.searchParams.get("sw") || ""; // Default to empty string if not provided
-		const categoryIdParam = url.searchParams.get("c") || null; // Default to empty string if not provided
+		const categoryIdParam = url.searchParams.get("c") || undefined; // Default to undefined if not provided
 
 		// DI (Dependency Injection) - 의존성 주입
 		const menuRepository = new SbMenuRepository();
@@ -19,11 +20,13 @@ export async function GET(request: Request) {
 			menuRepository,
 			imageRepository
 		);
-		const menuListDto: MenuListDto = await getMenuListUsecase.execute(
+
+		const queryDto = new GetMenuListQueryDto(
 			Number(pageParam),
 			categoryIdParam,
 			searchWordParam
 		);
+		const menuListDto: MenuListDto = await getMenuListUsecase.execute(queryDto);
 
 		return NextResponse.json(menuListDto, { status: 200 });
 	} catch (error) {

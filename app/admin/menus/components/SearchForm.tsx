@@ -15,12 +15,12 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const response = await fetch("/api/admin/categories");
+				const response = await fetch("/api/categories");
 				if (!response.ok) {
 					throw new Error("Failed to fetch categories");
 				}
 				const data = await response.json();
-				setCategories(data);
+				setCategories(data.categories); // Assuming the API returns an array of categories
 			} catch (error) {
 				console.error("Error fetching categories:", error);
 			}

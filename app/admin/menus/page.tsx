@@ -1,4 +1,5 @@
 "use client"; // 이 컴포넌트는 클라이언트 사이드에서 렌더링됩니다.
+
 import { MenuDto } from "@/application/usecases/admin/menu/dto/MenuDto"; // MenuDto 타입을 가져옵니다.
 import { useEffect, useState } from "react"; // React의 useEffect와 useState 훅을 가져옵니다.
 import Image from "next/image"; // Next.js의 최적화된 이미지 컴포넌트를 가져옵니다.
@@ -10,21 +11,21 @@ import RowEx from "./components/RowEx";
 
 export default function MenuListPage() {
 	console.log("page loaded"); // 페이지가 로드되었음을 콘솔에 출력합니다.
-	// 컴포넌트 시작
+	// 쿼리스트링 값 가져오기
 	const searchParams = useSearchParams(); // URL에서 쿼리 파라미터를 가져옵니다.
-	const pageParam = searchParams.get("p") || "1"; // 'p' 파라미터를 가져오거나 기본값 '1'을 사용합니다.
-	const searchWordParam = searchParams.get("q") || ""; // 'q' 파라미터를 가져오거나 기본값 ''을 사용합니다.
-	const categoryIdParam = searchParams.get("c") || ""; // 'c' 파라미터를 가져오거나 기본값 ''을 사용합니다.
+	const pageParam = searchParams.get("p");
+	const searchWordParam = searchParams.get("q");
+	const categoryIdParam = searchParams.get("c");
 
 	// 상태 관리변수
 	// - param 상태변수들
-	const [searchWord, setSearchWord] = useState<string>(searchWordParam); // 검색어를 저장하는 상태입니다.
-	const [categoryId, setCategoryId] = useState<string>(categoryIdParam); // 카테고리 ID를 저장하는 상태입니다.
+	const [searchWord, setSearchWord] = useState<string>(searchWordParam || ""); // 검색어를 저장하는 상태입니다.
+	const [categoryId, setCategoryId] = useState<string>(categoryIdParam || ""); // 카테고리 ID를 저장하는 상태입니다.
 	// - DTO 상태변수들
 	const [menus, setMenus] = useState<MenuDto[]>([]); // 메뉴 데이터를 저장하는 상태입니다.
 	const [totalCount, setTotalCount] = useState<number>(0); // 총 메뉴 개수를 저장하는 상태입니다.
 	const [currentPage, setCurrentPage] = useState<number>(
-		parseInt(pageParam, 10)
+		parseInt(pageParam || "1", 10)
 	);
 
 	const [pages, setPages] = useState<number[]>([]); // 페이지 목록을 저장하는 상태입니다.
@@ -48,7 +49,7 @@ export default function MenuListPage() {
 				const params = new URLSearchParams();
 
 				// 쿼리 파라미터를 추가합니다.
-				params.append("p", currentPage.toString());
+				if (currentPage) params.append("p", currentPage.toString());
 				if (searchWord) params.append("sw", searchWord);
 				if (categoryId) params.append("c", categoryId);
 
@@ -72,7 +73,7 @@ export default function MenuListPage() {
 	}, [currentPage, searchWord, categoryId]);
 
 	// 검색 폼 제출 핸들러
-	const searchSubmitHandler = (searchWord: string, categoryId: string) => {
+	const handleSearchSubmit = (searchWord: string, categoryId: string) => {
 		setCurrentPage(1);
 		setSearchWord(searchWord);
 		setCategoryId(categoryId);
@@ -94,7 +95,7 @@ export default function MenuListPage() {
 					</div>
 				</header>
 
-				<SearchForm onSearch={searchSubmitHandler} />
+				<SearchForm onSearch={handleSearchSubmit} />
 
 				<section className="n-frame:rounded-shadow">
 					<header>

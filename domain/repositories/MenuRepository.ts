@@ -1,8 +1,9 @@
 import { Menu } from "../entities/Menu";
+import { MenuFilter } from "./filters/MenuFilter";
 
 export interface MenuRepository {
-  count(searchWord: string, categoryId: string | null): Promise<number>;
-  findById(id:number): Promise<Menu>;
-  findAll(searchWord: string, categoryId: string | null, offset: number, limit: number): Promise<Menu[]>;
-  save(menu:Menu): Promise<Menu>;
+	count(fileter: MenuFilter): Promise<number>;
+	findById(id: number): Promise<Menu>;
+	findAll(filter: MenuFilter): Promise<Menu[]>;
+	save(menu: Menu): Promise<Menu>;
 }
