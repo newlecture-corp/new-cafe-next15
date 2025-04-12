@@ -9,7 +9,10 @@ export class SbMenuRepository implements MenuRepository {
 		const supabase = await createClient();
 
 		// Initialize the query for the "menu" table with exact count enabled
-		let query = supabase.from("menu").select("*", { count: "exact" });
+		let query = supabase
+			.from("menu_view")
+			.select("*", { count: "exact" })
+			.eq("category_is_public", true);
 
 		// Apply filters based on the MenuFilter object with AND logic
 		if (filter) {
@@ -61,8 +64,9 @@ export class SbMenuRepository implements MenuRepository {
 	async findAll(filter: MenuFilter): Promise<Menu[]> {
 		const supabase = await createClient();
 		let query = supabase
-			.from("menu")
-			.select()
+			.from("menu_view")
+			.select("*")
+			.eq("category_is_public", true) // 공개로 설정된 부모 엔티티만 포함
 			.order("created_at", { ascending: false })
 			.range(
 				filter.offset || 0,
@@ -81,17 +85,22 @@ export class SbMenuRepository implements MenuRepository {
 		}
 
 		const { data } = await query;
+
+		console.log("Fetched menus:", data); // Log the fetched menus
+
 		const menus: Menu[] =
-			data?.map((m) => ({
-				id: m.id,
-				korName: m.kor_name,
-				engName: m.eng_name,
-				price: m.price,
-				description: m.description,
-				categoryId: m.category_id,
-				createdAt: m.created_at,
-				updatedAt: m.updated_at,
-			})) || [];
+			data
+				?.filter((m) => m.category !== null)
+				.map((m) => ({
+					id: m.id,
+					korName: m.kor_name,
+					engName: m.eng_name,
+					price: m.price,
+					description: m.description,
+					categoryId: m.category_id,
+					createdAt: m.created_at,
+					updatedAt: m.updated_at,
+				})) || [];
 
 		return menus;
 	}

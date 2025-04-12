@@ -1,11 +1,11 @@
 import { MenuRepository } from "@/domain/repositories/MenuRepository";
 import { MenuListDto } from "./dto/MenuListDto";
 import { Menu } from "@/domain/entities/Menu";
-import { Image } from "@/domain/entities/Image";
 import { ImageRepository } from "@/domain/repositories/ImageRepository";
 import { MenuDto } from "./dto/MenuDto";
 import { GetMenuListQueryDto } from "./dto/GetMenuListQueryDto";
 import { MenuFilter } from "@/domain/repositories/filters/MenuFilter";
+import { ImageDto } from "./dto/ImageDto";
 
 export class GetMenuListUsecase {
 	private menuRepository: MenuRepository;
@@ -41,9 +41,9 @@ export class GetMenuListUsecase {
 			const totalCount: number = await this.menuRepository.count(filter);
 			const menuDtos: MenuDto[] = await Promise.all(
 				menus.map(async (menu) => {
-					const image: Image | null =
+					const image: ImageDto | null =
 						await this.imageRepository.findDefaultByMenuId(menu.id);
-					const images: Image[] = await this.imageRepository.findAllByMenuId(
+					const images: ImageDto[] = await this.imageRepository.findAllByMenuId(
 						menu.id
 					);
 					return {

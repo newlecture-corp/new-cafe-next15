@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function MenuCreatePage() {
 	return (
 		<main>
@@ -7,12 +9,12 @@ export default function MenuCreatePage() {
 				<header className="n-bar">
 					<h1 className="n-heading:5">제품관리 / 메뉴관리</h1>
 					<div className="ml:3 d:flex ai:center">
-						<a
+						<Link
 							href="../menus"
 							className="n-icon n-icon:arrow_back n-btn n-btn:rounded n-btn-size:small"
 						>
 							추가
-						</a>
+						</Link>
 					</div>
 				</header>
 
@@ -60,12 +62,12 @@ export default function MenuCreatePage() {
 						</div>
 						<div className="fl-dir:row jc:end">
 							<button className="n-btn n-btn-color:main">등록</button>
-							<a href="edit.html" className="n-btn n-btn-color:main">
+							<Link href="edit.html" className="n-btn n-btn-color:main">
 								등록 후 이미지 추가
-							</a>
-							<a href="../menus" className="n-btn">
+							</Link>
+							<Link href="../menus" className="n-btn">
 								취소
-							</a>
+							</Link>
 						</div>
 					</form>
 				</section>

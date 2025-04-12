@@ -3,11 +3,11 @@ import { SbMenuRepository } from "@/infra/repositories/supabase/SbMenuRepository
 import { GetMenuRowExUsecase } from "@/application/usecases/admin/menu/GetMenuRowExUsecase";
 import { NextResponse } from "next/server";
 
-type RequestParams = {
-	params: {
+interface RequestParams {
+	params: Promise<{
 		id: string;
-	};
-};
+	}>;
+}
 
 export async function GET(request: Request, { params }: RequestParams) {
 	try {

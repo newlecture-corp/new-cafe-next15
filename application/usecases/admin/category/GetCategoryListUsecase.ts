@@ -20,10 +20,12 @@ export class GetCategoryListUsecase {
 			// 데이터 쿼리
 			const filter = new CategoryFilter(
 				queryDto.name,
-				queryDto.publicOnly,
-				queryDto.order,
+				queryDto.includeAll,
+				queryDto.sortField,
+				queryDto.ascending,
 				offset,
-				limit
+				limit,
+				true
 			);
 
 			const categories = await this.categoryRepository.findAll(filter);

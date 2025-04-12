@@ -10,11 +10,11 @@ export async function GET(request: Request) {
 	try {
 		// URL에서 쿼리 파라미터를 가져옴
 		const url = new URL(request.url);
-		const pageParam = url.searchParams.get("p") || "1"; // 제공되지 않으면 기본값은 페이지 1
+		const pageParam = url.searchParams.get("p") || undefined; // 제공되지 않으면 기본값은 페이지 1
 		const nameParam = url.searchParams.get("name") || undefined;
-		const isPublicParam =
-			url.searchParams.get("pub") === "1" ? true : undefined;
-		const orderParam = url.searchParams.get("asc") === "1" ? true : undefined;
+		const includeAllParam = url.searchParams.get("all") || undefined;
+		const sortFieldParam = url.searchParams.get("sf") || undefined; // 정렬 필드
+		const ascendingParam = url.searchParams.get("asc") || undefined; // 정렬 순서 (asc 또는 desc)
 
 		const categoryRepository: CategoryRepository = new SbCategoryRepository();
 		const getCategoryListUsecase = new GetCategoryListUsecase(
@@ -25,8 +25,9 @@ export async function GET(request: Request) {
 		const queryDto = new GetCategoryListQueryDto(
 			Number(pageParam),
 			nameParam,
-			isPublicParam || false, // 관리자 페이지이므로 값을 전달하지 않으면 기본값은 false(모든 레코드 반환)
-			orderParam || false // 관리자 페이지이므로 값을 전달하지 않으면 기본값은 0(내림차순)
+			includeAllParam === "true", // 관리자 페이지이므로 값을 전달하지 않으면 기본값은 false(모든 레코드 반환)
+			sortFieldParam, // 정렬 기준 필드, 기본값은 "order" 필드
+			ascendingParam === "true" // 정렬 순서, 기본값은 true(오름차순)
 		);
 
 		const categories = await getCategoryListUsecase.execute(queryDto);

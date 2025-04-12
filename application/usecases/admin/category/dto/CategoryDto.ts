@@ -4,6 +4,7 @@ export class CategoryDto {
 		public name?: string,
 		public isPublic: boolean = false,
 		public order: number = 0,
-		public createdAt?: Date
+		public createdAt?: Date,
+		public menuCount?: number
 	) {}
 }

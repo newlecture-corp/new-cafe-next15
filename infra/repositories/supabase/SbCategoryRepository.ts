@@ -2,6 +2,7 @@ import { Category } from "@/domain/entities/Category";
 import { CategoryFilter } from "@/domain/repositories/filters/CategoryFilter";
 import { CategoryRepository } from "@/domain/repositories/CategoryRepository";
 import { createClient } from "@/utils/supabase/server";
+import { CategoryView } from "@/domain/entities/CategoryView";
 
 export class SbCategoryRepository implements CategoryRepository {
 	async count(filter?: CategoryFilter): Promise<number> {
@@ -17,7 +18,8 @@ export class SbCategoryRepository implements CategoryRepository {
 			if (filter.name) {
 				orConditions.push(`name.ilike.%${filter.name}%`);
 			}
-			if (filter.publicOnly === true) {
+
+			if (filter.includeAll === false) {
 				orConditions.push(`is_public.eq.true`);
 			}
 
@@ -35,32 +37,36 @@ export class SbCategoryRepository implements CategoryRepository {
 		return count || 0;
 	}
 
-	async findAll(filter?: CategoryFilter): Promise<Category[]> {
+	async findAll(filter?: CategoryFilter): Promise<CategoryView[]> {
 		const supabase = await createClient();
 
-		let query = supabase.from("category").select("*");
+		console.log(filter);
+
+		let query = supabase
+			.from("category_view")
+			.select("*")
+			.eq("is_public", true)
+			.order("menu_count", { ascending: true });
 
 		if (filter) {
 			const orConditions: string[] = [];
 
-			if (filter.name) {
-				orConditions.push(`name.ilike.%${filter.name}%`);
-			}
-			if (filter.publicOnly === true) {
-				orConditions.push(`is_public.eq.true`);
+			if (filter.includeMenu) {
+				query = supabase.from("category_view").select("*");
+				// .select("*, menus:menu(*), menu (count)");
 			}
 
-			if (orConditions.length > 0) {
-				query = query.or(orConditions.join(","));
-			}
+			if (filter.name) orConditions.push(`name.ilike.%${filter.name}%`);
 
-			if (filter.order !== undefined) {
-				query = query.order("order", { ascending: filter.order });
-			}
+			if (filter.includeAll === false) orConditions.push(`is_public.eq.true`);
+
+			if (orConditions.length > 0) query = query.or(orConditions.join(","));
+
+			if (filter.sortField !== undefined)
+				query = query.order(filter.sortField, { ascending: filter.ascending });
+			else query = query.order("order", { ascending: false });
 
 			query = query.range(filter.offset, filter.offset + filter.limit - 1);
-		} else {
-			query = query.order("order", { ascending: true });
 		}
 
 		const { data, error } = await query;
@@ -74,7 +80,8 @@ export class SbCategoryRepository implements CategoryRepository {
 				...category,
 				isPublic: category.is_public,
 				createdAt: category.created_at,
-			} as Category;
+				menuCount: category.menu_count,
+			} as CategoryView;
 		});
 	}
 
@@ -166,7 +173,7 @@ export class SbCategoryRepository implements CategoryRepository {
 		} as Category;
 	}
 
-	async delete(id: number): Promise<void> {
+	async deleteById(id: number): Promise<void> {
 		const supabase = await createClient();
 
 		const { error } = await supabase.from("category").delete().eq("id", id);

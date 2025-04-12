@@ -2,7 +2,8 @@ export class GetCategoryListQueryDto {
 	constructor(
 		public page?: number,
 		public name?: string,
-		public publicOnly?: boolean,
-		public order?: boolean
+		public includeAll?: boolean,
+		public sortField?: string,
+		public ascending?: boolean
 	) {}
 }

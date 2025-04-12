@@ -2,6 +2,7 @@ import { MenuRowExDto } from "./dto/MenuRowExDto";
 import { MenuRepository } from "@/domain/repositories/MenuRepository";
 import { Menu } from "@/domain/entities/Menu";
 import { ImageRepository } from "@/domain/repositories/ImageRepository";
+import { ImageDto } from "./dto/ImageDto";
 
 export class GetMenuRowExUsecase {
 	constructor(
@@ -11,7 +12,9 @@ export class GetMenuRowExUsecase {
 
 	async execute(menuId: string): Promise<MenuRowExDto> {
 		const menu: Menu = await this.menuRepository.findById(Number(menuId));
-		const images = await this.imageRepository.findAllByMenuId(Number(menuId));
+		const images: ImageDto[] = await this.imageRepository.findAllByMenuId(
+			Number(menuId)
+		);
 
 		if (!menu) {
 			throw new Error("Menu not found");

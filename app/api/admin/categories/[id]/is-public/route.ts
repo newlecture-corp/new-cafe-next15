@@ -4,13 +4,13 @@ import { SbCategoryRepository } from "@/infra/repositories/supabase/SbCategoryRe
 import { NextRequest, NextResponse } from "next/server";
 
 interface RequestParams {
-	params: {
-		id: number;
-	};
+	params: Promise<{
+		id: string;
+	}>;
 }
 
 export async function PUT(req: NextRequest, { params }: RequestParams) {
-	const { id } = params;
+	const { id } = await params;
 
 	if (!id) {
 		return NextResponse.json(
@@ -20,7 +20,7 @@ export async function PUT(req: NextRequest, { params }: RequestParams) {
 	}
 
 	try {
-		const body = await req.json();
+		const body: { isPublic: boolean } = await req.json();
 		const { isPublic } = body;
 
 		if (typeof isPublic !== "boolean") {
@@ -30,24 +30,24 @@ export async function PUT(req: NextRequest, { params }: RequestParams) {
 			);
 		}
 
-		// Update the category's isPublic status in the database (mocked here)
-		// Example: await db.category.update({ where: { id }, data: { isPublic } });
-
 		const toggleCategoryPublicUsecase = new ToggleCategoryPublicUsecase(
 			new SbCategoryRepository()
 		);
 
-		const updatedCategory = toggleCategoryPublicUsecase.execute(
-			new ToggleCategoryPublicDto(id, isPublic)
+		const updatedCategory = await toggleCategoryPublicUsecase.execute(
+			new ToggleCategoryPublicDto(Number(id), isPublic)
 		);
 
 		return NextResponse.json({
 			message: `Category ${id} updated successfully`,
 			updatedCategory,
 		});
-	} catch {
+	} catch (error) {
 		return NextResponse.json(
-			{ error: "Failed to update category" },
+			{
+				error: "Failed to update category",
+				details: error instanceof Error ? error.message : undefined,
+			},
 			{ status: 500 }
 		);
 	}
