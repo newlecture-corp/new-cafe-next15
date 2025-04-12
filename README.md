@@ -31,6 +31,8 @@
 - 미들웨어를 이용한 보안
 - SSR과 SSG 의 필요성
 - SEO에 대한 이해와 메타데이터 처리하기
+- on premise 배포
+- Github Actions를 이용한 CI/CD 
 
 ### [`뉴렉처가 운영하는 유투브`](https://www.youtube.com/@newlec1) : https://www.youtube.com/@newlec1
 
