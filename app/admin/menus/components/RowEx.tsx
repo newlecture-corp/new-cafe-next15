@@ -3,6 +3,7 @@
 import { MenuDto } from "@/application/usecases/admin/menu/dto/MenuDto";
 import React, { FC, useEffect, useState } from "react";
 import Image from "next/image";
+import { useAuthStore } from "@/stores/authStore";
 
 interface RowExProps {
 	menuId: number;
@@ -12,13 +13,20 @@ const RowEx: FC<RowExProps> = ({ menuId }) => {
 	const [menu, setMenu] = useState<MenuDto | null>(null);
 	const [loading, setLoading] = useState<boolean>(true); // Added loading state
 
+	const { token } = useAuthStore(); // Assuming you have a way to get the token
+
 	useEffect(() => {
 		// Fetch menu details
 		const fetchMenu = async () => {
 			try {
 				setLoading(true); // Set loading to true before fetching
 				console.log("Fetching menu details for ID:", menuId); // Debugging log
-				const response = await fetch(`/api/admin/menus/${menuId}`);
+
+				const response = await fetch(`/api/admin/menus/${menuId}`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
 				if (!response.ok) {
 					throw new Error("Failed to fetch menu details");
 				}
@@ -32,7 +40,7 @@ const RowEx: FC<RowExProps> = ({ menuId }) => {
 		};
 
 		fetchMenu();
-	}, [menuId]);
+	}, [menuId, token]);
 
 	return (
 		<>

@@ -1,6 +1,7 @@
 "use client";
 
 import { CategoryDto } from "@/application/usecases/admin/category/dto/CategoryDto";
+import { useAuthStore } from "@/stores/authStore";
 import React, { useState, useEffect } from "react";
 
 interface SearchFormProps {
@@ -8,6 +9,8 @@ interface SearchFormProps {
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
+	const { token } = useAuthStore();
+
 	const [searchWord, setSearchWord] = useState("");
 	const [categoryId, setCategoryId] = useState("");
 	const [categories, setCategories] = useState<CategoryDto[]>([]);
@@ -15,7 +18,11 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const response = await fetch("/api/categories");
+				const response = await fetch("/api/categories", {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
 				if (!response.ok) {
 					throw new Error("Failed to fetch categories");
 				}

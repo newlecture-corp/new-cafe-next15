@@ -1,9 +1,9 @@
-export class Member {
+export class SignedUpDto {
 	constructor(
+		public id: string,
 		public username: string,
 		public password: string,
 		public email: string,
-		public id?: string,
 		public image?: string,
 		public createdAt?: Date,
 		public updatedAt?: Date,

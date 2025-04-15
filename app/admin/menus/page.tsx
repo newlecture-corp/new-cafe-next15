@@ -8,6 +8,7 @@ import Link from "next/link"; // Next.js의 클라이언트 사이드 네비게�
 import Pager from "../components/Pager";
 import SearchForm from "./components/SearchForm";
 import RowEx from "./components/RowEx";
+import { useAuthStore } from "@/stores/authStore";
 
 export default function MenuListPage() {
 	console.log("page loaded"); // 페이지가 로드되었음을 콘솔에 출력합니다.
@@ -16,6 +17,8 @@ export default function MenuListPage() {
 	const pageParam = searchParams.get("p");
 	const searchWordParam = searchParams.get("q");
 	const categoryIdParam = searchParams.get("c");
+
+	const { token } = useAuthStore();
 
 	// 상태 관리변수
 	// - param 상태변수들
@@ -54,7 +57,11 @@ export default function MenuListPage() {
 				if (categoryId) params.append("c", categoryId);
 
 				// API 호출
-				const response = await fetch(`/api/admin/menus?${params.toString()}`);
+				const response = await fetch(`/api/admin/menus?${params.toString()}`, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				});
 				const data = await response.json();
 
 				// 상태 업데이트
