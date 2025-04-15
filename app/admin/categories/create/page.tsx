@@ -1,9 +1,12 @@
 "use client";
 
+import { useAuthStore } from "@/stores/authStore";
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 export default function MenuCreatePage() {
+	const { token } = useAuthStore();
+
 	const [formData, setFormData] = useState({
 		name: "",
 		isPublic: false,
@@ -25,6 +28,7 @@ export default function MenuCreatePage() {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify(formData),
 			});

@@ -2,8 +2,18 @@
 
 import React from "react";
 import Link from "next/link";
+import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "next/navigation";
 
 export default function AdminHeader() {
+	const clearAuth = useAuthStore((state) => state.clearAuth);
+	const router = useRouter();
+
+	const handleLogout = () => {
+		clearAuth(); // Zustand 상태 초기화
+		router.push("/"); // 로그아웃 후 리다이렉트
+	};
+
 	return (
 		<header className="">
 			<div className="n-content xl:w:xlarge">
@@ -25,9 +35,9 @@ export default function AdminHeader() {
 							</Link>
 						</li>
 						<li>
-							<Link className="n-btn" href="/logout">
+							<button className="n-btn" onClick={handleLogout}>
 								로그아웃
-							</Link>
+							</button>
 						</li>
 					</ul>
 				</nav>

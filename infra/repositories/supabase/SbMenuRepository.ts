@@ -86,8 +86,6 @@ export class SbMenuRepository implements MenuRepository {
 
 		const { data } = await query;
 
-		console.log("Fetched menus:", data); // Log the fetched menus
-
 		const menus: Menu[] =
 			data
 				?.filter((m) => m.category !== null)

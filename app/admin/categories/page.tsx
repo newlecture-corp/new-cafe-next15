@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { CategoryListDto } from "@/application/usecases/admin/category/dto/CategoryListDto";
 import { CategoryDto } from "@/application/usecases/admin/category/dto/CategoryDto";
 import { useSearchParams } from "next/navigation";
+import { useAuthStore } from "@/stores/authStore";
 
 // 이 컴포넌트는 클라이언트 사이드에서 렌더링됩니다.
 
@@ -16,6 +17,8 @@ export default function CategoryListPage() {
 	const pageParam = searchParams.get("p");
 	const sortFieldParam = searchParams.get("sf");
 	const ascendingParam = searchParams.get("asc");
+
+	const { token } = useAuthStore();
 
 	// 페이지 상태변수 초기화
 	const [currentPage, setCurrentPage] = useState<number>(1);
@@ -47,7 +50,12 @@ export default function CategoryListPage() {
 
 				// API 호출
 				const response = await fetch(
-					`/api/admin/categories?${params.toString()}`
+					`/api/admin/categories?${params.toString()}`,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					}
 				);
 
 				const data: CategoryListDto = await response.json();
@@ -63,7 +71,7 @@ export default function CategoryListPage() {
 		}
 
 		fetchCategories();
-	}, [ascending, currentPage, includeAll, sortField]);
+	}, [ascending, currentPage, includeAll, sortField, token]);
 
 	// 이벤트 핸들러 함수들 ----------------------------------
 	function handlePublicCheckboxChange(
@@ -99,6 +107,7 @@ export default function CategoryListPage() {
 					method: "PUT",
 					headers: {
 						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
 					},
 					body: JSON.stringify({ isPublic: isChecked }),
 				});
@@ -126,6 +135,9 @@ export default function CategoryListPage() {
 		try {
 			const response = await fetch(`/api/admin/categories/${id}`, {
 				method: "DELETE",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			});
 
 			if (!response.ok) {
