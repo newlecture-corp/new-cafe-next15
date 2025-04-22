@@ -33,11 +33,13 @@ const Pager: React.FC<PagerProps> = ({
 			) : (
 				<div className="n-btn disabled">이전</div>
 			)}
-			<ul className="n-bar">
+			<ul className="n-list gap:2">
 				{pages.map((pageNumber) => (
 					<li key={pageNumber}>
 						<button
-							className={`n-btn ${pageNumber === currentPage ? "active" : ""}`}
+							className={`n-btn ${
+								pageNumber === currentPage ? "n-active" : ""
+							}`}
 							onClick={() => onPageChange(pageNumber)}
 						>
 							{pageNumber} {/* 페이지 번호 */}

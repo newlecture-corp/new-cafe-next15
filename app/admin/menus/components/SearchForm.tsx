@@ -42,7 +42,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 	};
 
 	return (
-		<section className="n-frame:rounded-shadow">
+		<section className="n-frame n-expandable">
 			<header>
 				<h1>
 					<span className="n-icon n-icon:search n-deco">검색</span>{" "}
@@ -51,7 +51,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
 				<div className="ml:auto">
 					<label className="n-icon n-icon:arrow_drop_down cursor:pointer">
 						<span>확장버튼</span> {/* 확장 버튼 */}
-						<input className="d:none n-panel-expander" type="checkbox" />
+						<input className="d:none n-btn:expander" type="checkbox" />
 					</label>
 				</div>
 			</header>

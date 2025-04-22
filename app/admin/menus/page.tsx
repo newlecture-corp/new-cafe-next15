@@ -88,14 +88,14 @@ export default function MenuListPage() {
 
 	return (
 		<main>
-			<section>
-				<header className="n-bar">
+			<section className="d:flex flex-direction:column gap:5">
+				<header className="n-list">
 					<h1 className="n-heading:5">제품관리 / 메뉴관리</h1>
 					{/* 페이지 제목 */}
 					<div className="ml:3 d:flex">
 						<Link
 							href="menus/create"
-							className="n-icon n-icon:add n-btn n-btn:rounded n-btn-size:small"
+							className="n-icon n-icon:add icon-bd:circle"
 						>
 							추가 {/* 메뉴 추가 버튼 */}
 						</Link>
@@ -104,7 +104,7 @@ export default function MenuListPage() {
 
 				<SearchForm onSearch={handleSearchSubmit} />
 
-				<section className="n-frame:rounded-shadow">
+				<section className="n-frame:1">
 					<header>
 						<h1 className="d:none2">
 							<span className="n-icon n-icon:view_list n-deco n-deco-gap:2">
@@ -115,91 +115,92 @@ export default function MenuListPage() {
 							<span className="ml:1 n-heading:6">({totalCount})</span>
 						</div>
 					</header>
-
-					<table className="n-table n-table:expandable">
-						<thead>
-							<tr>
-								<th className="w:1">번호</th>
-								<th className="w:0 md:w:2 overflow:hidden">사진</th>
-								<th>한글명</th>
-								<th className="w:0 md:w:2 n-heading-truncate">영문명</th>
-								<th className="w:3">비고</th>
-							</tr>
-						</thead>
-
-						{menus.length === 0 && (
-							<tbody>
+					<div>
+						<table className="n-table n-table:expandable">
+							<thead>
 								<tr>
-									<td colSpan={5} className="text-align:center">
-										🍔🍕🍣 아직! 찾는 메뉴가 없어요 😢
-									</td>
+									<th className="w:1">번호</th>
+									<th className="w:0 md:w:2 overflow:hidden">사진</th>
+									<th>한글명</th>
+									<th className="w:0 md:w:2 n-heading-truncate">영문명</th>
+									<th className="w:3">비고</th>
 								</tr>
-							</tbody>
-						)}
+							</thead>
 
-						{menus.map((menu) => {
-							const isExpanded = expandedRows[menu.id] || false; // Check if the row is expanded
-
-							return (
-								<tbody key={menu.id}>
-									<tr className="vertical-align:middle">
-										<td>{menu.id}</td>
-										<td className="w:0 md:w:2 overflow:hidden">
-											<Image
-												src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/image/product/${menu.defaultImage}`}
-												alt={menu.korName}
-												width={50}
-												height={50}
-											/>
-										</td>
-										<td className="text-align:start n-heading-truncate">
-											<Link href="detail.html">{menu.korName}</Link>
-										</td>
-										<td className="w:0 md:w:2 n-heading-truncate">
-											{menu.engName}
-										</td>
-										<td>
-											<span className="d:inline-flex align-items:center">
-												<label className="n-icon n-icon:arrow_drop_down n-icon-size:2 n-btn mr:2">
-													<input
-														type="checkbox"
-														className="d:none n-row-expander"
-														checked={isExpanded}
-														onChange={() => toggleRowExpansion(menu.id)} // Toggle expansion for this row
-													/>
-													<span>상세보기</span>
-												</label>
-												<Link
-													className="n-icon n-icon:edit_square n-icon-color:base-6"
-													href="detail.html"
-												>
-													수정
-												</Link>
-												<form className="d:flex ai:center">
-													<input type="hidden" name="id" value="1" />
-													<button
-														className="n-icon n-icon:delete n-icon-color:base-6"
-														type="submit"
-													>
-														삭제
-													</button>
-												</form>
-											</span>
+							{menus.length === 0 && (
+								<tbody>
+									<tr>
+										<td colSpan={5} className="text-align:center">
+											🍔🍕🍣 아직! 찾는 메뉴가 없어요 😢
 										</td>
 									</tr>
-									{isExpanded && <RowEx menuId={menu.id} />}
-									{/* Conditionally render RowEx for this row */}
 								</tbody>
-							);
-						})}
-					</table>
-					<div className="mt:4 text-align:center">
-						{/* 페이지네이션 컴포넌트 */}
-						<Pager
-							currentPage={currentPage}
-							endPage={pages.length > 0 ? pages[pages.length - 1] : 1}
-							onPageChange={(newPage) => setCurrentPage(newPage)}
-						/>
+							)}
+
+							{menus.map((menu) => {
+								const isExpanded = expandedRows[menu.id] || false; // Check if the row is expanded
+
+								return (
+									<tbody key={menu.id}>
+										<tr className="vertical-align:middle">
+											<td>{menu.id}</td>
+											<td className="w:0 md:w:2 overflow:hidden">
+												<Image
+													src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/image/product/${menu.defaultImage}`}
+													alt={menu.korName}
+													width={50}
+													height={50}
+												/>
+											</td>
+											<td className="text-align:start n-heading-truncate">
+												<Link href="detail.html">{menu.korName}</Link>
+											</td>
+											<td className="w:0 md:w:2 n-heading-truncate">
+												{menu.engName}
+											</td>
+											<td>
+												<span className="d:inline-flex align-items:center">
+													<label className="n-icon n-icon:arrow_drop_down n-icon-size:2 n-btn mr:2">
+														<input
+															type="checkbox"
+															className="d:none n-row-expander"
+															checked={isExpanded}
+															onChange={() => toggleRowExpansion(menu.id)} // Toggle expansion for this row
+														/>
+														<span>상세보기</span>
+													</label>
+													<Link
+														className="n-icon n-icon:edit_square n-icon-color:base-6"
+														href="detail.html"
+													>
+														수정
+													</Link>
+													<form className="d:flex ai:center">
+														<input type="hidden" name="id" value="1" />
+														<button
+															className="n-icon n-icon:delete n-icon-color:base-6"
+															type="submit"
+														>
+															삭제
+														</button>
+													</form>
+												</span>
+											</td>
+										</tr>
+										{isExpanded && <RowEx menuId={menu.id} />}
+										{/* Conditionally render RowEx for this row */}
+									</tbody>
+								);
+							})}
+						</table>
+						<div className="mt:4 text-align:center">
+							{/* 페이지네이션 컴포넌트 */}
+							<Pager
+								currentPage={currentPage}
+								endPage={pages.length > 0 ? pages[pages.length - 1] : 1}
+								onPageChange={(newPage) => setCurrentPage(newPage)}
+							/>
+						</div>
 					</div>
 				</section>
 			</section>

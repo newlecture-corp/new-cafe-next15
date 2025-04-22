@@ -182,13 +182,13 @@ export default function CategoryListPage() {
 	return (
 		<main>
 			<section>
-				<header className="n-bar">
+				<header className="n-list">
 					<h1 className="n-heading:5">제품관리 / 카테고리리관리</h1>
 					{/* 페이지 제목 */}
 					<div className="ml:3 d:flex">
 						<Link
 							href="categories/create"
-							className="n-icon n-icon:add n-btn n-btn:rounded n-btn-size:small"
+							className="n-icon n-icon:add icon-bd:circle"
 						>
 							추가 {/* 메뉴 추가 버튼 */}
 						</Link>
