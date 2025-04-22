@@ -181,7 +181,7 @@ export default function CategoryListPage() {
 
 	return (
 		<main>
-			<section>
+			<section className="d:flex flex-direction:column gap:5">
 				<header className="n-list">
 					<h1 className="n-heading:5">제품관리 / 카테고리리관리</h1>
 					{/* 페이지 제목 */}
@@ -195,7 +195,7 @@ export default function CategoryListPage() {
 					</div>
 				</header>
 
-				<section className="n-frame:rounded-shadow">
+				<section className="n-frame">
 					<header>
 						<h1 className="d:none2">
 							<span className="n-icon n-icon:view_list n-deco n-deco-gap:2">
@@ -285,7 +285,7 @@ export default function CategoryListPage() {
 													<input
 														type="checkbox"
 														name="isPublic"
-														className="n-toggle flex-grow:0"
+														className="n-toggle n-row-expander flex-grow:0"
 														checked={category.isPublic}
 														onChange={(e) =>
 															handlePublicCheckboxChange(e, category.id)
