@@ -1,9 +1,9 @@
-import { MenuListDto } from "@/application/usecases/admin/menu/dto/MenuListDto";
 import { GetMenuListUsecase } from "@/application/usecases/admin/menu/GetMenuListUsecase";
-import { SbMenuRepository } from "@/infra/repositories/supabase/SbMenuRepository";
 import { SbImageRepository } from "@/infra/repositories/supabase/SbImageRepository";
 import { NextResponse } from "next/server";
 import { GetMenuListQueryDto } from "@/application/usecases/admin/menu/dto/GetMenuListQueryDto";
+import { GetMenuListDto } from "@/application/usecases/admin/menu/dto/GetMenuListDto";
+import { SbAdminMenuViewRepository } from "@/infra/repositories/supabase/SbAdminMenuViewRepository";
 
 export async function GET(request: Request) {
 	try {
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
 		const categoryIdParam = url.searchParams.get("c") || undefined; // Default to undefined if not provided
 
 		// DI (Dependency Injection) - 의존성 주입
-		const menuRepository = new SbMenuRepository();
+		const menuRepository = new SbAdminMenuViewRepository();
 		const imageRepository = new SbImageRepository();
 		const getMenuListUsecase = new GetMenuListUsecase(
 			menuRepository,
@@ -26,7 +26,9 @@ export async function GET(request: Request) {
 			categoryIdParam,
 			searchWordParam
 		);
-		const menuListDto: MenuListDto = await getMenuListUsecase.execute(queryDto);
+		const menuListDto: GetMenuListDto = await getMenuListUsecase.execute(
+			queryDto
+		);
 
 		return NextResponse.json(menuListDto, { status: 200 });
 	} catch (error) {

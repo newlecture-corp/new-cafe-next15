@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import React, { FC, FormEvent } from "react";
 import styles from "./page.module.scss";
@@ -76,7 +75,7 @@ const LoginPage: FC = () => {
 		<main>
 			<div className={loginFormBox}>
 				<section className={loginForm}>
-					<h1>Rland Login</h1>
+					<h1>NCafe Login</h1>
 					<form onSubmit={handleLogin}>
 						<div className="input-box">
 							<label>ID</label>

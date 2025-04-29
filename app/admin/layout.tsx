@@ -7,7 +7,8 @@ import AdminHeader from "./components/AdminHeader";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 
-import { initLayout } from "newtil-css"; // 수정된 패키지 이름
+// 레이아웃 스크립트 초기화
+import { initLayout } from "newtil-css";
 
 export default function AdminLayout({
 	children,
@@ -50,7 +51,7 @@ export default function AdminLayout({
 	}
 
 	return (
-		<div className="n-layout">
+		<div className="n-layout layout-color:base-1">
 			<AdminHeader />
 
 			<AdminAside />

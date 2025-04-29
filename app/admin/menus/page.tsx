@@ -67,7 +67,8 @@ export default function MenuListPage() {
 				// 상태 업데이트
 				setMenus(data.menus);
 				setTotalCount(data.totalCount);
-				setPages(data.pages); // 페이지 목록 상태 업데이트
+				// setPages(data.pages); // 페이지 목록 상태 업데이트
+				setPages([1, 2, 3, 4, 5]);
 			} catch (error) {
 				console.error("Failed to fetch menus:", error); // 에러 발생 시 로그를 출력합니다.
 			}

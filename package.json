@@ -16,7 +16,7 @@
     "jose": "^6.0.10",
     "jsonwebtoken": "^9.0.2",
     "ncafe-next15-app": "file:",
-    "newtil-css": "^0.2.71",
+    "newtil-css": "^0.2.72",
     "next": "15.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

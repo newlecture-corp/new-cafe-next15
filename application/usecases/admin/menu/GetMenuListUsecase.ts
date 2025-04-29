@@ -1,26 +1,25 @@
-import { MenuRepository } from "@/domain/repositories/MenuRepository";
-import { MenuListDto } from "./dto/MenuListDto";
-import { Menu } from "@/domain/entities/Menu";
 import { ImageRepository } from "@/domain/repositories/ImageRepository";
-import { MenuDto } from "./dto/MenuDto";
+
 import { GetMenuListQueryDto } from "./dto/GetMenuListQueryDto";
-import { MenuFilter } from "@/domain/repositories/filters/MenuFilter";
-import { ImageDto } from "./dto/ImageDto";
+import { AdminMenuViewCriteria } from "@/domain/repositories/criteria/AdminMenuViewCriteria";
+import { AdminMenuView } from "@/domain/entities/AdminMenuView";
+import { GetMenuListDto } from "./dto/GetMenuListDto";
+import { AdminMenuViewRepository } from "@/domain/repositories/AdminMenuViewRepository";
 
 export class GetMenuListUsecase {
-	private menuRepository: MenuRepository;
+	private repository: AdminMenuViewRepository;
 	private imageRepository: ImageRepository;
 
 	// 생성자에서 MenuRepository를 주입
 	constructor(
-		menuRepository: MenuRepository,
+		menuRepository: AdminMenuViewRepository,
 		imageRepository: ImageRepository
 	) {
-		this.menuRepository = menuRepository;
+		this.repository = menuRepository;
 		this.imageRepository = imageRepository;
 	}
 
-	async execute(queryDto: GetMenuListQueryDto) {
+	async execute(queryDto: GetMenuListQueryDto): Promise<GetMenuListDto> {
 		try {
 			// 데이터 쿼리를 위한 변수 설정
 			const pageSize = 10; // 한 페이지에 표현할 레코드 크기를 정의
@@ -31,46 +30,32 @@ export class GetMenuListUsecase {
 			const limit = pageSize; // 페이지당 10개 메뉴를 보여준다고 가정
 
 			// 데이터 쿼리
-			const filter = new MenuFilter(
-				queryDto.searchWord,
+			const filter = new AdminMenuViewCriteria(
+				queryDto.searchName,
 				queryDto.categoryId,
+				queryDto.sortField,
+				queryDto.ascending,
+				queryDto.includeAll,
 				offset,
 				limit
 			);
-			const menus: Menu[] = await this.menuRepository.findAll(filter); // 메뉴를 가져오는 메소드 호출
-			const totalCount: number = await this.menuRepository.count(filter);
-			const menuDtos: MenuDto[] = await Promise.all(
-				menus.map(async (menu) => {
-					const image: ImageDto | null =
-						await this.imageRepository.findDefaultByMenuId(menu.id);
-					const images: ImageDto[] = await this.imageRepository.findAllByMenuId(
-						menu.id
-					);
-					return {
-						...menu,
-						description: menu.description || "", // Ensure description is always a string
-						defaultImage: image?.name || "blank.png",
-						images,
-					};
-				})
-			); // MenuDto로 변환
 
-			// MenuListDto 데이터 구성
-			const startPage = Math.floor((currentPage - 1) / pageSize) * pageSize + 1;
+			const menus: AdminMenuView[] = await this.repository.findAll(filter);
+			const totalCount: number = await this.repository.count(filter);
 			const endPage = Math.ceil(totalCount / pageSize); // 페이지의 마지막 번호를 생성
-			const pages = Array.from({ length: 5 }, (_, i) => startPage + i).filter(
-				(pageNumber) => pageNumber <= endPage
-			); // 현재 페이지를 기준으로 5개의 페이지 번호를 생성
 
-			// MenuListDto 객체 생성
-			const menuListDto: MenuListDto = {
-				menus: menuDtos,
-				totalCount,
-				endPage, // 모든 메뉴가 한 페이지에 맞는다고 가정
-				pages, // 모든 메뉴가 한 페이지에 맞는다고 가정
-			};
+			// 확인용 log 출력
+			// console.log("--- menuListUsecase.execute ---");
+			// console.log("메뉴 개수:", totalCount); // 메뉴 개수를 콘솔에 출력
+			// console.log("메뉴 목록:", menus); // 메뉴 목록을 콘솔에 출력
 
-			return menuListDto;
+			return {
+				menus: menus.map((menu) => ({
+					...menu,
+				})), // Menu 타입으로 변환
+				currentPage,
+				endPage, // 페이지당 10개 메뉴로 가정
+			} as GetMenuListDto; // GetMenuListDto 타입으로 반환
 		} catch (error) {
 			console.error("메뉴를 가져오는 중 오류 발생:", error);
 			throw new Error("메뉴를 가져오지 못했습니다");

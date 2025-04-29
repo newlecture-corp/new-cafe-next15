@@ -23,7 +23,7 @@ export default function AdminHeader() {
 				</label>
 			</div>
 			<h1 className="n-heading:2">
-				<Link href="/">Rland</Link>
+				<Link href="/">NCafe</Link>
 			</h1>
 			<nav className="ml:auto">
 				<h1 className="d:none">헤더메뉴</h1>

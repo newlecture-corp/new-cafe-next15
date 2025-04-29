@@ -1,14 +1,16 @@
+import RootFooter from "./components/RootFooter";
 import RootHeader from "./components/RootHeader";
 
-export default function AdminLayout({
+export default function AnonLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="n-layout">
+		<div>
 			<RootHeader />
-			<main>{children}</main>
+			{children}
+			<RootFooter />
 		</div>
 	);
 }

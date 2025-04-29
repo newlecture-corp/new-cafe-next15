@@ -2,7 +2,10 @@ import { CreateCategoryUsecase } from "@/application/usecases/admin/category/Cre
 import { CreateCategoryDto } from "@/application/usecases/admin/category/dto/CreateCategoryDto";
 import { GetCategoryListQueryDto } from "@/application/usecases/admin/category/dto/GetCategoryListQueryDto";
 import { GetCategoryListUsecase } from "@/application/usecases/admin/category/GetCategoryListUsecase";
+import { AdminCategoryViewRepository } from "@/domain/repositories/AdminCategoryViewRepository";
 import { CategoryRepository } from "@/domain/repositories/CategoryRepository";
+import { SbAdminCategoryViewRepository } from "@/infra/repositories/supabase/SbAdminCategoryViewRepository";
+
 import { SbCategoryRepository } from "@/infra/repositories/supabase/SbCategoryRepository";
 import { NextResponse } from "next/server";
 
@@ -16,7 +19,8 @@ export async function GET(request: Request) {
 		const sortFieldParam = url.searchParams.get("sf") || undefined; // 정렬 필드
 		const ascendingParam = url.searchParams.get("asc") || undefined; // 정렬 순서 (asc 또는 desc)
 
-		const categoryRepository: CategoryRepository = new SbCategoryRepository();
+		const categoryRepository: AdminCategoryViewRepository =
+			new SbAdminCategoryViewRepository();
 		const getCategoryListUsecase = new GetCategoryListUsecase(
 			categoryRepository
 		);

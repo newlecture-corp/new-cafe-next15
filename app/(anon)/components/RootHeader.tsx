@@ -29,9 +29,9 @@ const RootHeader = () => {
 	};
 
 	return (
-		<header className={header}>
+		<header className={`${header}`}>
 			<h1>
-				<Link href="/">Rland</Link>
+				<Link href="/">NCafe</Link>
 			</h1>
 			<div className={topMobileMenu}>
 				<Link

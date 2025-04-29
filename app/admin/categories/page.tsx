@@ -23,7 +23,7 @@ export default function CategoryListPage() {
 	// 페이지 상태변수 초기화
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [categories, setCategories] = useState<CategoryDto[]>([]);
-	const [includeAll, setIncludeAll] = useState<boolean>(true);
+	const [includeAll, setIncludeAll] = useState<boolean>(false);
 	const [sortField, setSortField] = useState<string | null>("order");
 	const [ascending, setAscending] = useState<boolean>(true);
 	const [totalCount, setTotalCount] = useState<number>(0);
@@ -219,7 +219,7 @@ export default function CategoryListPage() {
 							<span className="fs:7">비공개포함</span>
 						</label>
 					</div>
-					<table className="n-table n-table:expandable">
+					<table className="n-table">
 						<thead>
 							<tr>
 								<th className="w:1">번호</th>
@@ -257,7 +257,9 @@ export default function CategoryListPage() {
 								<tbody key={category.id}>
 									<tr className="vertical-align:middle">
 										<td>{category.id}</td>
-										<td>{category.order}</td>
+										<td className="w:0 md:w:2 overflow:hidden">
+											{category.order}
+										</td>
 										<td className="text-align:start n-heading-truncate">
 											{category.name}
 										</td>
@@ -285,7 +287,7 @@ export default function CategoryListPage() {
 													<input
 														type="checkbox"
 														name="isPublic"
-														className="n-toggle n-row-expander flex-grow:0"
+														className="n-toggle flex-grow:0"
 														checked={category.isPublic}
 														onChange={(e) =>
 															handlePublicCheckboxChange(e, category.id)
@@ -298,7 +300,7 @@ export default function CategoryListPage() {
 											<span className="d:inline-flex align-items:center">
 												<Link
 													className="n-icon n-icon:edit_square n-icon-color:base-6"
-													href="detail.html"
+													href={`categories/${category.id}/edit`}
 												>
 													수정
 												</Link>

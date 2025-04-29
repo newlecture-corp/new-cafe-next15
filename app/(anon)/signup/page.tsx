@@ -50,7 +50,7 @@ export default function SignupPage() {
 		<main>
 			<div className={regFormBox}>
 				<section className={regForm}>
-					<h1>Rland 회원가입</h1>
+					<h1>NCafe 회원가입</h1>
 					<form action="/signup" method="post" onSubmit={handleSignup}>
 						<div className="input-box">
 							<label>이름</label>

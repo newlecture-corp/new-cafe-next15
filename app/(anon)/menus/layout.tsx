@@ -1,17 +1,17 @@
 // import './globals.css';
-"use client";
-import { ReactNode } from 'react';
-import Basket from './components/Basket';
+// "use client";
+import { ReactNode } from "react";
+import Basket from "./components/Basket";
 
 type LayoutProps = {
-    children: ReactNode;
+	children: ReactNode;
 };
 
-export default function RootLayout({ children }: LayoutProps) {
-    return (
-        <>
-        {children}
-        <Basket />
-        </>      
-    );
+export default function AnonMenuLayout({ children }: LayoutProps) {
+	return (
+		<>
+			{children}
+			<Basket />
+		</>
+	);
 }

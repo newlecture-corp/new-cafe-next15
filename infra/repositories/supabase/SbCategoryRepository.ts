@@ -1,32 +1,17 @@
 import { Category } from "@/domain/entities/Category";
-import { CategoryFilter } from "@/domain/repositories/filters/CategoryFilter";
+
 import { CategoryRepository } from "@/domain/repositories/CategoryRepository";
 import { createClient } from "@/utils/supabase/server";
-import { CategoryView } from "@/domain/entities/CategoryView";
 
 export class SbCategoryRepository implements CategoryRepository {
-	async count(filter?: CategoryFilter): Promise<number> {
+	async count(): Promise<number> {
 		const supabase = await createClient();
 
-		let query = supabase
+		const query = supabase
 			.from("category")
-			.select("*", { count: "exact", head: true });
-
-		if (filter) {
-			const orConditions: string[] = [];
-
-			if (filter.name) {
-				orConditions.push(`name.ilike.%${filter.name}%`);
-			}
-
-			if (filter.includeAll === false) {
-				orConditions.push(`is_public.eq.true`);
-			}
-
-			if (orConditions.length > 0) {
-				query = query.or(orConditions.join(","));
-			}
-		}
+			.select("*", { count: "exact", head: true })
+			.eq("is_public", true)
+			.order("order", { ascending: true });
 
 		const { count, error } = await query;
 
@@ -37,37 +22,14 @@ export class SbCategoryRepository implements CategoryRepository {
 		return count || 0;
 	}
 
-	async findAll(filter?: CategoryFilter): Promise<CategoryView[]> {
+	async findAll(): Promise<Category[]> {
 		const supabase = await createClient();
 
-		console.log(filter);
-
-		let query = supabase
-			.from("category_view")
+		const query = supabase
+			.from("category")
 			.select("*")
 			.eq("is_public", true)
-			.order("menu_count", { ascending: true });
-
-		if (filter) {
-			const orConditions: string[] = [];
-
-			if (filter.includeMenu) {
-				query = supabase.from("category_view").select("*");
-				// .select("*, menus:menu(*), menu (count)");
-			}
-
-			if (filter.name) orConditions.push(`name.ilike.%${filter.name}%`);
-
-			if (filter.includeAll === false) orConditions.push(`is_public.eq.true`);
-
-			if (orConditions.length > 0) query = query.or(orConditions.join(","));
-
-			if (filter.sortField !== undefined)
-				query = query.order(filter.sortField, { ascending: filter.ascending });
-			else query = query.order("order", { ascending: false });
-
-			query = query.range(filter.offset, filter.offset + filter.limit - 1);
-		}
+			.order("order", { ascending: true });
 
 		const { data, error } = await query;
 
@@ -75,14 +37,7 @@ export class SbCategoryRepository implements CategoryRepository {
 			throw new Error(`Failed to fetch categories: ${error.message}`);
 		}
 
-		return data.map((category) => {
-			return {
-				...category,
-				isPublic: category.is_public,
-				createdAt: category.created_at,
-				menuCount: category.menu_count,
-			} as CategoryView;
-		});
+		return data;
 	}
 
 	async findById(id: number): Promise<Category | null> {

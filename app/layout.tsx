@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import "newtil-css";
 // import { initLayout } from "newtil-css";
 import "./global.css";

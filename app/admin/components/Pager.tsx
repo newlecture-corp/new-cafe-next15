@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { FC } from "react";
 
 interface PagerProps {
 	currentPage: number;
@@ -8,11 +8,7 @@ interface PagerProps {
 	onPageChange: (newPage: number) => void; // Custom event for page change
 }
 
-const Pager: React.FC<PagerProps> = ({
-	currentPage,
-	endPage,
-	onPageChange,
-}) => {
+const Pager: FC<PagerProps> = ({ currentPage, endPage, onPageChange }) => {
 	const startNumber = Math.floor((currentPage - 1) / 5) * 5 + 1; // 시작 페이지 번호 계산
 	const pages = Array.from({ length: 5 }, (_, i) => startNumber + i).filter(
 		(page) => page <= endPage
