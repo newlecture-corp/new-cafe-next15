@@ -1,4 +1,3 @@
-import RcmdMenu from "./components/RcmdMenu";
 import styles from "./page.module.scss";
 import Image from "next/image";
 
@@ -123,7 +122,6 @@ export default function MenuDetailPage() {
 					</form>
 				</section>
 			</main>
-			<RcmdMenu />
 		</>
 	);
 }
