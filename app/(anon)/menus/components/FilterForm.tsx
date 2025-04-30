@@ -1,4 +1,4 @@
-import Input from "@/app/components/Input";
+// import Input from "@/app/components/Input";
 import styles from "./FilterForm.module.scss";
 import { CategoryDto } from "@/application/usecases/admin/category/dto/CategoryDto";
 import Link from "next/link";
@@ -29,7 +29,8 @@ const FilterForm = async ({ query }: FilterFormProps) => {
 				<h1 className="d:none">Menu Filter Panel</h1>
 				<h2>NCafe Menu</h2>
 				<form action="/menus" method="get">
-					<Input />
+					{/* <Input /> */}
+					<input type="text" name="s" placeholder="검색어를 입력하세요." />
 					<button type="submit" className="n-icon n-icon:search">
 						검색
 					</button>
