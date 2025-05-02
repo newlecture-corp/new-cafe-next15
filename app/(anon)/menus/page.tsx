@@ -1,11 +1,12 @@
 import { GetMenuListDto } from "@/application/usecases/menu/dto/GetMenuListDto";
 import styles from "./page.module.scss";
 import Image from "next/image";
-import LikeButton from "./components/LikeButton";
+// import LikeButton from "./components/LikeButton";
 import FilterForm from "./components/FilterForm";
 import Pager from "../components/Pager";
 import { Suspense } from "react";
 import Loading from "./loading";
+import { toggleLike } from "./actions";
 
 const {
 	["menus-box"]: menusBox,
@@ -86,7 +87,13 @@ const List = async ({
 											</h1>
 											<h2>{m.engName}</h2>
 											<div className={price}>{m.price} 원</div>
-											<LikeButton menuId={m.id} like={false} />
+											<form action={toggleLike}>
+												<input type="hidden" name="menu-id" value={m.id} />
+												<button className="n-icon n-icon:favorite">
+													좋아요
+												</button>
+											</form>
+											{/* <LikeButton menuId={m.id} like={false} /> */}
 											<div className={pay}>
 												<button className="n-icon n-icon:shopping_cart icon-bd:circle n-btn-color:main-2">
 													장바구니에 담기
