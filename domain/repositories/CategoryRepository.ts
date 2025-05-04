@@ -1,4 +1,6 @@
-import { Category } from "../entities/Category";
+// import { Category } from "../entities/Category";
+
+import { Category } from "@/prisma/generated";
 
 export interface CategoryRepository {
 	count(): Promise<number>;
