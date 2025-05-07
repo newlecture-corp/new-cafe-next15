@@ -1,67 +1,66 @@
-import { NextRequest, NextResponse } from "next/server";
-import { jwtVerify } from "jose"; // Edge Runtime 호환 라이브러리
-
-export const config = {
-	matcher: ["/api/admin/:path*", "/api/member/:path*"], // /api/admin/** 및 /api/member/** 경로에 미들웨어 적용
-};
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-	const authHeader = req.headers.get("authorization");
-	const token = authHeader?.startsWith("Bearer ")
-		? authHeader.slice(7)
-		: authHeader;
+	const { pathname } = req.nextUrl;
 
-	// console.log("==== Middelware Token: ===========", token);
+	console.log("middleware", pathname);
 
-	// 토큰이 없는 경우 401 Unauthorized 반환
-	if (!token) {
-		return NextResponse.json(
-			{ error: "Unauthorized: No token provided" },
-			{ status: 401 }
-		);
+	// 인증이 필요한 경로만 제한
+	const isMemberPage = pathname.startsWith("/member");
+	const isAdminPage = pathname.startsWith("/admin");
+	const isApiMember = pathname.startsWith("/api/member");
+	const isApiAdmin = pathname.startsWith("/api/admin");
+
+	const isProtectedPage = isMemberPage || isAdminPage;
+	const isProtectedApi = isApiMember || isApiAdmin;
+
+	console.log("isProtectedPage", isProtectedPage);
+
+	const token = await getToken({ req });
+
+	// 페이지 보호
+	if (isProtectedPage) {
+		console.log("----------------------------------------");
+		console.log("isProtectedPage", isProtectedPage);
+		console.log("token", token);
+		if (!token) {
+			const loginUrl = new URL("/login", req.url);
+			loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+			return NextResponse.redirect(loginUrl);
+		}
+
+		console.log("token", token);
+		const expiryDate = new Date((token.exp as number) * 1000); // 초 → 밀리초로 변환
+		console.log("⏰ Token expires at:", expiryDate.toISOString());
+
+		if (isAdminPage && !token.roles?.includes("ADMIN")) {
+			return NextResponse.rewrite(new URL("/error/403", req.url));
+		}
 	}
 
-	try {
-		// Verify the token using jose
-		const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-		const { payload } = await jwtVerify(token, secret);
-		// console.log("Decoded Payload:", payload);
-		// roles 배열 확인
-		const roles = payload.roles as string[] | undefined;
-		if (!roles || !Array.isArray(roles)) {
-			return NextResponse.json(
-				{ error: "Forbidden: Invalid roles in token" },
-				{ status: 403 }
-			);
+	// API 보호
+	if (isProtectedApi) {
+		if (!token) {
+			return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
 		}
-		// 요청 경로에 따라 권한 검증
-		const pathname = req.nextUrl.pathname;
-		// /api/admin/** 경로는 ADMIN 역할만 접근 가능
-		if (pathname.startsWith("/api/admin") && !roles.includes("ADMIN")) {
-			return NextResponse.json(
-				{ error: "Forbidden: You do not have access to this resource" },
-				{ status: 403 }
-			);
+
+		if (isApiAdmin && token?.roles?.includes("ADMIN")) {
+			return NextResponse.json({ message: "Forbidden" }, { status: 403 });
 		}
-		// /api/member/** 경로는 MEMBER 또는 ADMIN 역할만 접근 가능
-		if (
-			pathname.startsWith("/api/member") &&
-			!roles.some((role) => ["MEMBER", "ADMIN"].includes(role))
-		) {
-			return NextResponse.json(
-				{ error: "Forbidden: You do not have access to this resource" },
-				{ status: 403 }
-			);
-		}
-		// 	console.log("Verified Payload:", payload);
-	} catch (error) {
-		// 토큰이 유효하지 않은 경우 401 Unauthorized 반환
-		console.error("Token validation error:", error);
-		return NextResponse.json(
-			{ error: "Unauthorized: Invalid token" },
-			{ status: 401 }
-		);
 	}
 
 	return NextResponse.next();
 }
+
+export const config = {
+	matcher: [
+		"/member/:path*",
+		"/admin/:path*",
+		"/api/member/:path*",
+		"/api/admin/:path*",
+		"/member",
+		"/admin",
+	],
+};

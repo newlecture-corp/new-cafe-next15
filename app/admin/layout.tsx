@@ -25,16 +25,7 @@ export default function AdminLayout({
 			// zustand 상태 복원이 완료되지 않았으면 로딩 상태 유지
 			return;
 		}
-
-		if (!isAuthenticated()) {
-			// Save the current URL to localStorage before redirecting
-			localStorage.setItem("returnURL", pathname); // Use window.location.pathname for the current URL path
-			router.push("/login"); // Redirect to login page
-		} else if (!roles.includes("ADMIN")) {
-			router.push("/error/403"); // Redirect to 403 error page if not admin
-		} else {
-			setIsLoading(false); // Loading complete after login check
-		}
+		setIsLoading(false); // Loading complete after login check
 	}, [isRehydrated, isAuthenticated, roles, pathname, router]);
 
 	useLayoutEffect(() => {
