@@ -1,8 +1,17 @@
+// ***********************************
+
+// 이 코드는 사용되지 않는 코드입니다.
+// 현재는 next auth를 사용하고 있습니다.
+
+// ***********************************
+
 import { MemberRepository } from "@/domain/repositories/MemberRepository";
 
 import bcrypt from "bcryptjs";
 
-import { Member } from "@/domain/entities/Memeber";
+// import { Member } from "@/domain/entities/Memeber";
+import { Member } from "@/prisma/generated";
+
 import { SignUpDto } from "./dto/SignUpDto";
 import { SignedUpDto } from "./dto/SignedUpDto";
 import { StorageRepository } from "@/domain/repositories/StorageRepository";

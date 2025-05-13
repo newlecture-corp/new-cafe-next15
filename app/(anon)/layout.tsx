@@ -1,3 +1,4 @@
+"use client";
 import RootFooter from "./components/RootFooter";
 import RootHeader from "./components/RootHeader";
 

@@ -1,7 +1,7 @@
 import { GetMenuListQueryDto } from "@/application/usecases/menu/dto/GetMenuListQueryDto";
 import { GetMenuListUsecase } from "@/application/usecases/menu/GetMenuListUsecase";
 import { MenuViewRepository } from "@/domain/repositories/MenuViewRepository";
-import { SbMenuViewRepository } from "@/infra/repositories/supabase/SbMenuViewRepository";
+import { PrMenuViewRepository } from "@/infra/repositories/prisma/PrMenuViewRepository";
 
 import { NextResponse } from "next/server";
 
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
 		const sortFieldParam = url.searchParams.get("sf") || undefined; // 정렬 필드
 		const ascendingParam = url.searchParams.get("asc") || undefined; // 정렬 순서 (asc 또는 desc)
 
-		const repository: MenuViewRepository = new SbMenuViewRepository();
+		const repository: MenuViewRepository = new PrMenuViewRepository();
 		const usecase = new GetMenuListUsecase(repository);
 
 		// 모든 파라미터를 포함하여 DTO 생성

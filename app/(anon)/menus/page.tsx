@@ -74,7 +74,7 @@ const List = async ({
 										<div className={imgBox}>
 											<a href={`menus/${m.id}`}>
 												<Image
-													src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/image/product/${m.defaultImage}`}
+													src={`/image/product/${m.defaultImage}`}
 													alt={`${m.korName} 이미지`}
 													width={300}
 													height={300}

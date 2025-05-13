@@ -92,7 +92,7 @@ export class SbMenuViewRepository implements MenuViewRepository {
 			data
 				?.filter((m) => m.category !== null)
 				.map((m) => {
-					console.log("메뉴 데이터:", m); // 메뉴 데이터를 콘솔에 출력
+					// console.log("메뉴 데이터:", m); // 메뉴 데이터를 콘솔에 출력
 					return {
 						id: m.id,
 						korName: m.kor_name,

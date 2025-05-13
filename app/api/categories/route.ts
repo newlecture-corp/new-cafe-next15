@@ -1,12 +1,14 @@
 import { CategoryListDto } from "@/application/usecases/category/dto/CategoryListDto";
 import { GetCategoryListUsecase } from "@/application/usecases/category/GetCategoryListUsecase";
-import { SbCategoryRepository } from "@/infra/repositories/supabase/SbCategoryRepository";
+import { PrCategoryRepository } from "@/infra/repositories/prisma/PrCategoryRepository";
+
 import { NextResponse } from "next/server";
 
 export async function GET() {
+	console.log("Fetching category list...");
 	try {
 		const getCategoryListUsecase = new GetCategoryListUsecase(
-			new SbCategoryRepository()
+			new PrCategoryRepository()
 		);
 
 		const categoryListDto: CategoryListDto =

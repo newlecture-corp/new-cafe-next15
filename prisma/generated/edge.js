@@ -219,11 +219,12 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://ncafe:newlion4@new-cafe.com:5433/ncafedb?schema=public"
+        "value": null
       }
     }
   },

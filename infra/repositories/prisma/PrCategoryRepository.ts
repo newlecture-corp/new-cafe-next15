@@ -1,6 +1,6 @@
 import { CategoryRepository } from "@/domain/repositories/CategoryRepository";
 import { Category } from "@/prisma/generated";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/prisma/generated";
 
 export class PrCategoryRepository implements CategoryRepository {
 	private prisma: PrismaClient;

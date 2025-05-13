@@ -3,6 +3,7 @@ import { GetMenuListDto } from "./dto/GetMenuListDto";
 import { GetMenuListQueryDto } from "./dto/GetMenuListQueryDto";
 import { MenuViewCriteria } from "@/domain/repositories/criteria/MenuViewCriteria";
 import { MenuViewRepository } from "@/domain/repositories/MenuViewRepository";
+import jwt from "jsonwebtoken";
 
 export class GetMenuListUsecase {
 	private repository: MenuViewRepository;
@@ -20,24 +21,32 @@ export class GetMenuListUsecase {
 		const offset = (currentPage - 1) * pageSize; // 페이지당 10개 메뉴를 보여준다고 가정
 		const limit = pageSize; // 페이지당 10개 메뉴를 보여준다고 가정
 
+		console.log(
+			"=========== authenticated memberId:",
+			this.getLoginedMemberIdFromToken()
+		);
+
 		const criteria: MenuViewCriteria = new MenuViewCriteria(
 			queryDto.searchName,
 			queryDto.categoryId,
+			this.getLoginedMemberIdFromToken(), // 로그인한 사용자의 ID를 가져오는 메소드
 			queryDto.sortField,
 			queryDto.ascending,
-			false,
+			true, // publicOnly를 true로 설정
 			offset,
 			limit
 		);
 
 		const menus: MenuView[] = await this.repository.findAll(criteria);
-		const totalCount = await this.repository.count(criteria); // 메뉴 수를 가져오는 메소드 호출
-		const endPage = Math.ceil(totalCount / pageSize); // 마지막 페이지를 정의
+		const totalCount = await this.repository.count(criteria); // 메뉴 수를 가져오는
+		// 최소 endPage 번호는 1이 되도록 연산
+		const endPage = Math.max(1, Math.ceil(totalCount / pageSize)); // 마지막 페이지를 정의, 최소값을 1로 설정
 
-		console.log("메뉴 개수:", totalCount); // 메뉴 개수를 콘솔에 출력
-		console.log("메뉴 목록:", menus); // 메뉴 목록을 콘솔에 출력
-		console.log("현재 페이지:", currentPage); // 현재 페이지를 콘솔에 출력
-		console.log("마지막 페이지:", endPage); // 마지막 페이지를 콘솔에 출력
+		// 테스트용 출력 코드 =============================================
+		// console.log("메뉴 개수:", totalCount); // 메뉴 개수를 콘솔에 출력
+		// console.log("메뉴 목록:", menus); // 메뉴 목록을 콘솔에 출력
+		// console.log("현재 페이지:", currentPage); // 현재 페이지를 콘솔에 출력
+		// console.log("마지막 페이지:", endPage); // 마지막 페이지를 콘솔에 출력
 
 		return {
 			menus: menus.map((menu) => ({
@@ -47,5 +56,30 @@ export class GetMenuListUsecase {
 			currentPage: currentPage,
 			endPage: endPage, // 페이지당 10개 메뉴로 가정
 		};
+	}
+
+	private getLoginedMemberIdFromToken(): string | undefined {
+		const token = this.getAuthorizationToken();
+		if (!token) {
+			return undefined;
+		}
+
+		try {
+			const decoded = jwt.verify(
+				token,
+				process.env.JWT_SECRET || "default_secret"
+			) as { id: string };
+			return decoded.id || undefined;
+		} catch (error) {
+			console.error("Invalid token:", error);
+			return undefined;
+		}
+	}
+
+	private getAuthorizationToken(): string | null {
+		if (typeof window !== "undefined" && window.localStorage) {
+			return window.localStorage.getItem("authToken");
+		}
+		return null;
 	}
 }

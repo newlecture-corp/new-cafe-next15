@@ -2,9 +2,10 @@ export class MenuViewCriteria {
 	constructor(
 		public searchWord?: string,
 		public categoryId?: string,
-		public sortField: string = "created_at",
+		public memberId?: string,
+		public sortField: string = "createdAt",
 		public ascending: boolean = false,
-		public includeAll: boolean = false,
+		public publicOnly: boolean = true,
 		public offset: number = 0,
 		public limit: number = 10
 	) {}

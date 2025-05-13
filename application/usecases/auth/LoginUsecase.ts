@@ -1,3 +1,10 @@
+// ***********************************
+
+// 이 코드는 사용되지 않는 코드입니다.
+// 현재는 next auth를 사용하고 있습니다.
+
+// ***********************************
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { MemberRoleRepository } from "@/domain/repositories/MemberRoleRepository";

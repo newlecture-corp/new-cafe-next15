@@ -1,9 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { signIn, signOut, useSession } from "next-auth/react";
 import styles from "./RootHeader.module.scss";
-import { useAuthStore } from "@/stores/authStore";
-import { useEffect, useState, MouseEvent } from "react";
 
 // 스타일 모듈을 쉽게 사용하기 위해 destructuring & camel 표기로 매핑
 const {
@@ -13,20 +11,7 @@ const {
 } = styles;
 
 const RootHeader = () => {
-	const { username, clearAuth } = useAuthStore();
-	const [authenticated, setAuthenticated] = useState(false);
-	const router = useRouter();
-
-	useEffect(() => {
-		// 클라이언트에서만 실행
-		setAuthenticated(username !== undefined && username !== null);
-	}, [username]);
-
-	const handleLogout = (e: MouseEvent<HTMLAnchorElement>) => {
-		e.preventDefault(); // 기본 동작 방지
-		clearAuth(); // 인증정보 지우기
-		router.push("/"); // 루트로 이동
-	};
+	const { data: session } = useSession();
 
 	return (
 		<header className={`${header}`}>
@@ -59,21 +44,22 @@ const RootHeader = () => {
 							</Link>
 						</li>
 						<li>
-							{authenticated ? (
-								<Link
+							{session ? (
+								<a
 									className="n-icon n-icon:logout n-icon-color:base-1"
-									onClick={handleLogout}
-									href="/logout"
+									onClick={() => signOut()}
+									href="#"
 								>
 									로그아웃
-								</Link>
+								</a>
 							) : (
-								<Link
+								<a
 									className="n-icon n-icon:login n-icon-color:base-1"
-									href="/login"
+									onClick={() => signIn()}
+									href="#"
 								>
 									로그인
-								</Link>
+								</a>
 							)}
 						</li>
 					</ul>
