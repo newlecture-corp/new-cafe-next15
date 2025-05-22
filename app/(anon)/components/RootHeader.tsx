@@ -12,6 +12,8 @@ const {
 
 const RootHeader = () => {
 	const { data: session } = useSession();
+	console.log("=== header test session print===");
+	console.log(session);
 
 	return (
 		<header className={`${header}`}>

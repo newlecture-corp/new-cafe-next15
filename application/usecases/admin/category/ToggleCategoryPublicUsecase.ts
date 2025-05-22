@@ -1,4 +1,4 @@
-import { CategoryRepository } from "@/domain/repositories/CategoryRepository";
+import { CategoryRepository } from "@/domain/repositories/admin/CategoryRepository";
 import { ToggleCategoryPublicDto } from "./dto/ToggleCategoryPublicDto";
 
 export class ToggleCategoryPublicUsecase {

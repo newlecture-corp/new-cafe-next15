@@ -1,6 +1,7 @@
 import { ToggleCategoryPublicDto } from "@/application/usecases/admin/category/dto/ToggleCategoryPublicDto";
 import { ToggleCategoryPublicUsecase } from "@/application/usecases/admin/category/ToggleCategoryPublicUsecase";
-import { SbCategoryRepository } from "@/infra/repositories/supabase/SbCategoryRepository";
+import { PrCategoryRepository } from "@/infra/repositories/prisma/admin/PrCategoryRepository";
+
 import { NextRequest, NextResponse } from "next/server";
 
 interface RequestParams {
@@ -31,7 +32,7 @@ export async function PUT(req: NextRequest, { params }: RequestParams) {
 		}
 
 		const toggleCategoryPublicUsecase = new ToggleCategoryPublicUsecase(
-			new SbCategoryRepository()
+			new PrCategoryRepository()
 		);
 
 		const updatedCategory = await toggleCategoryPublicUsecase.execute(

@@ -1,5 +1,6 @@
 export class GetMenuListQueryDto {
 	constructor(
+		public memberId?: string,
 		public page?: number,
 		public categoryId?: string,
 		public searchName?: string,

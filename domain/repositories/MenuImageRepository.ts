@@ -8,7 +8,7 @@
 
 import { MenuImage } from "@/prisma/generated";
 
-export interface ImageRepository {
+export interface MenuImageRepository {
 	findAllByMenuId(menuId: number): Promise<MenuImage[]>;
 	findDefaultByMenuId(menuId: number): Promise<MenuImage | null>;
 }

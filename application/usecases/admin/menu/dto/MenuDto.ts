@@ -7,9 +7,6 @@ export class MenuDto {
 		public description: string | "",
 		public categoryId: number,
 		public createdAt: Date,
-		public updatedAt: Date,
-
-		public defaultImage: string | "",
-		public images: { id: number; name: string; isDefault: boolean }[] = []
+		public updatedAt: Date
 	) {}
 }

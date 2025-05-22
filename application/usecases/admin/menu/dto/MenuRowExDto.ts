@@ -1,4 +1,4 @@
-import { Image } from "@/domain/entities/Image";
+import { MenuImage } from "@/prisma/generated";
 
 export class MenuRowExDto {
 	constructor(
@@ -7,6 +7,6 @@ export class MenuRowExDto {
 		public price: number = 0,
 		public createdAt: Date,
 
-		public images: Image[] | []
+		public images: MenuImage[] | []
 	) {}
 }

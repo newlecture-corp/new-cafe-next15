@@ -1,12 +1,13 @@
 import { CategoryListDto } from "./dto/CategoryListDto";
 
-import { AdminCategoryViewCriteria } from "@/domain/repositories/criteria/AdminCategoryViewCriteria";
 import { CategoryDto } from "./dto/CategoryDto";
-import { AdminCategoryViewRepository } from "@/domain/repositories/AdminCategoryViewRepository";
+
 import { GetCategoryListQueryDto } from "./dto/GetCategoryListQueryDto";
+import { CategoryRepository } from "@/domain/repositories/admin/CategoryRepository";
+import { CategoryViewCriteria } from "@/domain/repositories/criteria/admin/CategoryViewCriteria";
 
 export class GetCategoryListUsecase {
-	constructor(private repository: AdminCategoryViewRepository) {}
+	constructor(private repository: CategoryRepository) {}
 
 	async execute(queryDto: GetCategoryListQueryDto): Promise<CategoryListDto> {
 		try {
@@ -19,7 +20,7 @@ export class GetCategoryListUsecase {
 			const limit = pageSize; // 페이지당 10개 메뉴를 보여준다고 가정
 
 			// 데이터 쿼리
-			const filter = new AdminCategoryViewCriteria(
+			const filter = new CategoryViewCriteria(
 				queryDto.name,
 				queryDto.sortField,
 				queryDto.ascending,
@@ -29,7 +30,7 @@ export class GetCategoryListUsecase {
 				true
 			);
 
-			const categories = await this.repository.findAll(filter);
+			const categories = await this.repository.findViewAll(filter);
 			const totalCount = await this.repository.count(filter); // 카테고리 수를 가져오는 메소드 호출
 			const endPage = Math.ceil(totalCount / 10); // 페이지당 10개 카테고리로 가정
 			const pages = Array.from({ length: endPage }, (_, i) => i + 1); // 페이지 번호 배열 생성

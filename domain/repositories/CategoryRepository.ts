@@ -6,10 +6,12 @@
 import { Category } from "@/prisma/generated";
 
 export interface CategoryRepository {
+	// 집계 메소드들
 	count(): Promise<number>;
+
+	// 조회 메소드들
 	findAll(): Promise<Category[]>;
 	findById(id: number): Promise<Category | null>;
-	save(category: Category): Promise<Category>;
-	update(category: Category): Promise<Category>;
-	deleteById(id: number): Promise<void>;
+
+	// 조작 메소드들
 }

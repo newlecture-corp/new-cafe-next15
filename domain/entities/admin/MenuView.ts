@@ -1,6 +1,6 @@
-import { Menu } from "./Menu";
+import { Menu } from "../Menu";
 
-export class AdminMenuView extends Menu {
+export class MenuView extends Menu {
 	constructor(
 		id: number,
 		korName: string,

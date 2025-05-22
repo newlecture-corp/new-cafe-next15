@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { LoginUsecase } from "@/application/usecases/auth/LoginUsecase";
-import { SbMemberRepository } from "@/infra/repositories/supabase/SbMemberRepository";
-import { SbMemberRoleRepository } from "@/infra/repositories/supabase/MemberRoleRepository";
+
 import { LoggedInDto } from "@/application/usecases/auth/dto/LoggedInDto";
 
 export async function POST(request: Request) {
@@ -18,8 +17,8 @@ export async function POST(request: Request) {
 		}
 
 		const usecase = new LoginUsecase(
-			new SbMemberRepository(),
-			new SbMemberRoleRepository()
+			new PrMemberRepository(),
+			new PrMemberRoleRepository()
 		);
 
 		const loggedInDto: LoggedInDto = await usecase.execute({

@@ -22,23 +22,4 @@ export class PrCategoryRepository implements CategoryRepository {
 			where: { id },
 		});
 	}
-
-	async save(category: Category): Promise<Category> {
-		return this.prisma.category.create({
-			data: category,
-		});
-	}
-
-	async update(category: Category): Promise<Category> {
-		return this.prisma.category.update({
-			where: { id: category.id },
-			data: category,
-		});
-	}
-
-	async deleteById(id: number): Promise<void> {
-		await this.prisma.category.delete({
-			where: { id },
-		});
-	}
 }

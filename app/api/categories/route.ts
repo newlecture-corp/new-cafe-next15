@@ -5,7 +5,6 @@ import { PrCategoryRepository } from "@/infra/repositories/prisma/PrCategoryRepo
 import { NextResponse } from "next/server";
 
 export async function GET() {
-	console.log("Fetching category list...");
 	try {
 		const getCategoryListUsecase = new GetCategoryListUsecase(
 			new PrCategoryRepository()

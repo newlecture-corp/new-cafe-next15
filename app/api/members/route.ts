@@ -1,9 +1,9 @@
 import { SignedUpDto } from "@/application/usecases/auth/dto/SignedUpDto";
 import { SignUpDto } from "@/application/usecases/auth/dto/SignUpDto";
 import { SignUpUsecase } from "@/application/usecases/auth/SignUpUsecase";
+import { PrMemberRepository } from "@/infra/repositories/prisma/PrMemberRepository";
+import { PrStorageRepository } from "@/infra/repositories/prisma/PrStorageRepository";
 
-import { SbMemberRepository } from "@/infra/repositories/supabase/SbMemberRepository";
-import { SbStorageRepository } from "@/infra/repositories/supabase/SbStorageRepository";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -22,8 +22,8 @@ export async function POST(request: Request) {
 		};
 
 		const signUpUsecase = new SignUpUsecase(
-			new SbMemberRepository(),
-			new SbStorageRepository()
+			new PrMemberRepository(),
+			new PrStorageRepository()
 		);
 
 		const signedUpDto: SignedUpDto = await signUpUsecase.execute(signDto);

@@ -16,7 +16,7 @@ export async function middleware(req: NextRequest) {
 	const isProtectedPage = isMemberPage || isAdminPage;
 	const isProtectedApi = isApiMember || isApiAdmin;
 
-	console.log("isProtectedPage", isProtectedPage);
+	// console.log("isProtectedPage", isProtectedPage);
 
 	const token = await getToken({ req });
 
@@ -53,10 +53,9 @@ export async function middleware(req: NextRequest) {
 		}
 
 		// 토큰 정보 확인
-		console.log("====== Token Info ====");
-
-		console.log("🔐 Raw Token:", token);
-		console.log("🔐 Token JSON:", JSON.stringify(token, null, 2));
+		// console.log("====== middleware Token Info ====");
+		// console.log("🔐 Raw Token:", token);
+		// console.log("🔐 Token JSON:", JSON.stringify(token, null, 2));
 
 		const expiryDate = new Date((token.exp as number) * 1000); // 초 → 밀리초로 변환
 		console.log("⏰ Token expires at:", expiryDate.toISOString());

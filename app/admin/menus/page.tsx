@@ -11,18 +11,17 @@ import RowEx from "./components/RowEx";
 import { useAuthStore } from "@/stores/authStore";
 
 export default function MenuListPage() {
-	console.log("page loaded"); // 페이지가 로드되었음을 콘솔에 출력합니다.
-	// 쿼리스트링 값 가져오기
+	// URL에서 쿼리 파라미터를 가져옴
 	const searchParams = useSearchParams(); // URL에서 쿼리 파라미터를 가져옵니다.
 	const pageParam = searchParams.get("p");
-	const searchWordParam = searchParams.get("q");
+	const searcNameParam = searchParams.get("n");
 	const categoryIdParam = searchParams.get("c");
 
 	const { token } = useAuthStore();
 
 	// 상태 관리변수
 	// - param 상태변수들
-	const [searchWord, setSearchWord] = useState<string>(searchWordParam || ""); // 검색어를 저장하는 상태입니다.
+	const [searcName, setSearcName] = useState<string>(searcNameParam || ""); // 검색어를 저장하는 상태입니다.
 	const [categoryId, setCategoryId] = useState<string>(categoryIdParam || ""); // 카테고리 ID를 저장하는 상태입니다.
 	// - DTO 상태변수들
 	const [menus, setMenus] = useState<MenuDto[]>([]); // 메뉴 데이터를 저장하는 상태입니다.
@@ -53,7 +52,7 @@ export default function MenuListPage() {
 
 				// 쿼리 파라미터를 추가합니다.
 				if (currentPage) params.append("p", currentPage.toString());
-				if (searchWord) params.append("sw", searchWord);
+				if (searcName) params.append("sw", searcName);
 				if (categoryId) params.append("c", categoryId);
 
 				// API 호출
@@ -78,12 +77,12 @@ export default function MenuListPage() {
 		fetchMenus();
 
 		// 의존성 배열에 상태 변수를 추가합니다.
-	}, [currentPage, searchWord, categoryId]);
+	}, [currentPage, searcName, categoryId]);
 
 	// 검색 폼 제출 핸들러
 	const handleSearchSubmit = (searchWord: string, categoryId: string) => {
 		setCurrentPage(1);
-		setSearchWord(searchWord);
+		setSearcName(searchWord);
 		setCategoryId(categoryId);
 	};
 
@@ -147,14 +146,14 @@ export default function MenuListPage() {
 											<td>{menu.id}</td>
 											<td className="w:0 md:w:2 overflow:hidden">
 												<Image
-													src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/image/product/${menu.defaultImage}`}
+													src={`/image/product/${menu.defaultImage}`}
 													alt={menu.korName}
 													width={50}
 													height={50}
 												/>
 											</td>
 											<td className="text-align:start n-heading-truncate">
-												<Link href="detail.html">{menu.korName}</Link>
+												<Link href={`menus/${menu.id}`}>{menu.korName}</Link>
 											</td>
 											<td className="w:0 md:w:2 n-heading-truncate">
 												{menu.engName}
@@ -172,7 +171,7 @@ export default function MenuListPage() {
 													</label>
 													<Link
 														className="n-icon n-icon:edit_square n-icon-color:base-6"
-														href="detail.html"
+														href={`menus/${menu.id}/edit`}
 													>
 														수정
 													</Link>

@@ -1,3 +1,3 @@
 export default function MenuDetailPage() {
-    return <div></div>;
+	return <div>ㅅㄷㅅㄴㄴ</div>;
 }

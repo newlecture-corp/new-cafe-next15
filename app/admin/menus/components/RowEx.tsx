@@ -70,7 +70,7 @@ const RowEx: FC<RowExProps> = ({ menuId }) => {
 													>
 														<Image
 															className="w:4 h:auto"
-															src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/image/product/${image.name}`}
+															src={`/image/product/${image.name}`}
 															alt={menu.engName}
 															width={100}
 															height={100}

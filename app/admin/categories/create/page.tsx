@@ -1,5 +1,6 @@
 "use client";
 
+import { fetchWithAuthClient } from "@/lib/fetchWithAuthClient";
 import { useAuthStore } from "@/stores/authStore";
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useState } from "react";
@@ -24,7 +25,7 @@ export default function MenuCreatePage() {
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
-			const response = await fetch("/api/admin/categories", {
+			const response = await fetchWithAuthClient("/api/admin/categories", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

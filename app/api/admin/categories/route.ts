@@ -2,12 +2,11 @@ import { CreateCategoryUsecase } from "@/application/usecases/admin/category/Cre
 import { CreateCategoryDto } from "@/application/usecases/admin/category/dto/CreateCategoryDto";
 import { GetCategoryListQueryDto } from "@/application/usecases/admin/category/dto/GetCategoryListQueryDto";
 import { GetCategoryListUsecase } from "@/application/usecases/admin/category/GetCategoryListUsecase";
-import { AdminCategoryViewRepository } from "@/domain/repositories/AdminCategoryViewRepository";
-import { CategoryRepository } from "@/domain/repositories/CategoryRepository";
-import { SbAdminCategoryViewRepository } from "@/infra/repositories/supabase/SbAdminCategoryViewRepository";
+import { CategoryRepository } from "@/domain/repositories/admin/CategoryRepository";
+import { PrCategoryRepository } from "@/infra/repositories/prisma/admin/PrCategoryRepository";
+import { getToken, JWT } from "next-auth/jwt";
 
-import { SbCategoryRepository } from "@/infra/repositories/supabase/SbCategoryRepository";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: Request) {
 	try {
@@ -19,8 +18,7 @@ export async function GET(request: Request) {
 		const sortFieldParam = url.searchParams.get("sf") || undefined; // 정렬 필드
 		const ascendingParam = url.searchParams.get("asc") || undefined; // 정렬 순서 (asc 또는 desc)
 
-		const categoryRepository: AdminCategoryViewRepository =
-			new SbAdminCategoryViewRepository();
+		const categoryRepository: CategoryRepository = new PrCategoryRepository();
 		const getCategoryListUsecase = new GetCategoryListUsecase(
 			categoryRepository
 		);
@@ -46,11 +44,15 @@ export async function GET(request: Request) {
 	}
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
 	try {
+		// 1. JSON으로 전달한 데이터를 DTO로 변환하기 전에
+		// 하이픈이 포함된 키가 있을 경우 camelCase로 변환하고
 		const body = await request.json();
+		const isPublic =
+			body["is-public"] !== undefined ? body["is-public"] : body.isPublic;
 
-		// 필수 필드 검증
+		// 2. 필수 필드들을 검증하고
 		if (!body.name) {
 			return NextResponse.json(
 				{ error: "카테고리 이름은 필수입니다" },
@@ -58,21 +60,27 @@ export async function POST(request: Request) {
 			);
 		}
 
-		// 하이픈이 포함된 키를 camelCase로 변환
-		const isPublic =
-			body["is-public"] !== undefined ? body["is-public"] : body.isPublic;
+		// 3. 필수 필드에 문제가 없으면 현재 로그인한 사용자 정보를 가져와서
+		const token: JWT | null = await getToken({ req: request }); // 로그인한 사용자의 ID를 가져오는 메소드
+		const regMemberId: string = token?.id ?? ""; // 로그인한 사용자의 ID 확인
 
-		// DTO 생성
-		const createCategoryDto = new CreateCategoryDto(
-			body.name,
-			isPublic || false
-		);
+		// 4. Category를 등록하기 위한 DTO 객체를 변환해 둔 후
+		const createCategoryDto: CreateCategoryDto = {
+			name: body.name,
+			regMemberId,
+			isPublic,
+		};
 
-		// 리포지토리 및 유스케이스 초기화
-		const categoryRepository: CategoryRepository = new SbCategoryRepository();
+		// 테스트용 출력 코드
+		console.log("=== /api/admin/categories/route.ts ===");
+		console.log("createCategoryDto:", createCategoryDto);
+		console.log("=============================");
+
+		// 4. DI (Dependency Injection) - 의존성 주입을 하고
+		const categoryRepository: CategoryRepository = new PrCategoryRepository();
 		const createCategoryUsecase = new CreateCategoryUsecase(categoryRepository);
 
-		// 유스케이스 실행
+		// 5. Usecase(업무로직) 실행한다.
 		const newCategory = await createCategoryUsecase.execute(createCategoryDto);
 
 		return NextResponse.json(newCategory, { status: 201 });

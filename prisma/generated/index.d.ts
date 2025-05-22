@@ -4970,7 +4970,7 @@ export namespace Prisma {
   export type CategoryMinAggregateOutputType = {
     id: number | null
     name: string | null
-    is_public: boolean | null
+    isPublic: boolean | null
     order: number | null
     regMemberId: string | null
     createdAt: Date | null
@@ -4979,7 +4979,7 @@ export namespace Prisma {
   export type CategoryMaxAggregateOutputType = {
     id: number | null
     name: string | null
-    is_public: boolean | null
+    isPublic: boolean | null
     order: number | null
     regMemberId: string | null
     createdAt: Date | null
@@ -4988,7 +4988,7 @@ export namespace Prisma {
   export type CategoryCountAggregateOutputType = {
     id: number
     name: number
-    is_public: number
+    isPublic: number
     order: number
     regMemberId: number
     createdAt: number
@@ -5009,7 +5009,7 @@ export namespace Prisma {
   export type CategoryMinAggregateInputType = {
     id?: true
     name?: true
-    is_public?: true
+    isPublic?: true
     order?: true
     regMemberId?: true
     createdAt?: true
@@ -5018,7 +5018,7 @@ export namespace Prisma {
   export type CategoryMaxAggregateInputType = {
     id?: true
     name?: true
-    is_public?: true
+    isPublic?: true
     order?: true
     regMemberId?: true
     createdAt?: true
@@ -5027,7 +5027,7 @@ export namespace Prisma {
   export type CategoryCountAggregateInputType = {
     id?: true
     name?: true
-    is_public?: true
+    isPublic?: true
     order?: true
     regMemberId?: true
     createdAt?: true
@@ -5123,7 +5123,7 @@ export namespace Prisma {
   export type CategoryGroupByOutputType = {
     id: number
     name: string
-    is_public: boolean
+    isPublic: boolean
     order: number
     regMemberId: string
     createdAt: Date
@@ -5151,7 +5151,7 @@ export namespace Prisma {
   export type CategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    is_public?: boolean
+    isPublic?: boolean
     order?: boolean
     regMemberId?: boolean
     createdAt?: boolean
@@ -5163,7 +5163,7 @@ export namespace Prisma {
   export type CategorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    is_public?: boolean
+    isPublic?: boolean
     order?: boolean
     regMemberId?: boolean
     createdAt?: boolean
@@ -5173,7 +5173,7 @@ export namespace Prisma {
   export type CategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
-    is_public?: boolean
+    isPublic?: boolean
     order?: boolean
     regMemberId?: boolean
     createdAt?: boolean
@@ -5183,13 +5183,13 @@ export namespace Prisma {
   export type CategorySelectScalar = {
     id?: boolean
     name?: boolean
-    is_public?: boolean
+    isPublic?: boolean
     order?: boolean
     regMemberId?: boolean
     createdAt?: boolean
   }
 
-  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "is_public" | "order" | "regMemberId" | "createdAt", ExtArgs["result"]["category"]>
+  export type CategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "isPublic" | "order" | "regMemberId" | "createdAt", ExtArgs["result"]["category"]>
   export type CategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     regMember?: boolean | MemberDefaultArgs<ExtArgs>
     menus?: boolean | Category$menusArgs<ExtArgs>
@@ -5211,7 +5211,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
-      is_public: boolean
+      isPublic: boolean
       order: number
       regMemberId: string
       createdAt: Date
@@ -5642,7 +5642,7 @@ export namespace Prisma {
   interface CategoryFieldRefs {
     readonly id: FieldRef<"Category", 'Int'>
     readonly name: FieldRef<"Category", 'String'>
-    readonly is_public: FieldRef<"Category", 'Boolean'>
+    readonly isPublic: FieldRef<"Category", 'Boolean'>
     readonly order: FieldRef<"Category", 'Int'>
     readonly regMemberId: FieldRef<"Category", 'String'>
     readonly createdAt: FieldRef<"Category", 'DateTime'>
@@ -9562,7 +9562,7 @@ export namespace Prisma {
   export const CategoryScalarFieldEnum: {
     id: 'id',
     name: 'name',
-    is_public: 'is_public',
+    isPublic: 'isPublic',
     order: 'order',
     regMemberId: 'regMemberId',
     createdAt: 'createdAt'
@@ -9897,7 +9897,7 @@ export namespace Prisma {
     NOT?: CategoryWhereInput | CategoryWhereInput[]
     id?: IntFilter<"Category"> | number
     name?: StringFilter<"Category"> | string
-    is_public?: BoolFilter<"Category"> | boolean
+    isPublic?: BoolFilter<"Category"> | boolean
     order?: IntFilter<"Category"> | number
     regMemberId?: StringFilter<"Category"> | string
     createdAt?: DateTimeFilter<"Category"> | Date | string
@@ -9908,7 +9908,7 @@ export namespace Prisma {
   export type CategoryOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    is_public?: SortOrder
+    isPublic?: SortOrder
     order?: SortOrder
     regMemberId?: SortOrder
     createdAt?: SortOrder
@@ -9922,7 +9922,7 @@ export namespace Prisma {
     OR?: CategoryWhereInput[]
     NOT?: CategoryWhereInput | CategoryWhereInput[]
     name?: StringFilter<"Category"> | string
-    is_public?: BoolFilter<"Category"> | boolean
+    isPublic?: BoolFilter<"Category"> | boolean
     order?: IntFilter<"Category"> | number
     regMemberId?: StringFilter<"Category"> | string
     createdAt?: DateTimeFilter<"Category"> | Date | string
@@ -9933,7 +9933,7 @@ export namespace Prisma {
   export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
-    is_public?: SortOrder
+    isPublic?: SortOrder
     order?: SortOrder
     regMemberId?: SortOrder
     createdAt?: SortOrder
@@ -9950,7 +9950,7 @@ export namespace Prisma {
     NOT?: CategoryScalarWhereWithAggregatesInput | CategoryScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Category"> | number
     name?: StringWithAggregatesFilter<"Category"> | string
-    is_public?: BoolWithAggregatesFilter<"Category"> | boolean
+    isPublic?: BoolWithAggregatesFilter<"Category"> | boolean
     order?: IntWithAggregatesFilter<"Category"> | number
     regMemberId?: StringWithAggregatesFilter<"Category"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Category"> | Date | string
@@ -10357,7 +10357,7 @@ export namespace Prisma {
 
   export type CategoryCreateInput = {
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     createdAt?: Date | string
     regMember: MemberCreateNestedOneWithoutCategoriesInput
@@ -10367,7 +10367,7 @@ export namespace Prisma {
   export type CategoryUncheckedCreateInput = {
     id?: number
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     regMemberId: string
     createdAt?: Date | string
@@ -10376,7 +10376,7 @@ export namespace Prisma {
 
   export type CategoryUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     regMember?: MemberUpdateOneRequiredWithoutCategoriesNestedInput
@@ -10386,7 +10386,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     regMemberId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10396,7 +10396,7 @@ export namespace Prisma {
   export type CategoryCreateManyInput = {
     id?: number
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     regMemberId: string
     createdAt?: Date | string
@@ -10404,7 +10404,7 @@ export namespace Prisma {
 
   export type CategoryUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -10412,7 +10412,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     regMemberId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10920,7 +10920,7 @@ export namespace Prisma {
   export type CategoryCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    is_public?: SortOrder
+    isPublic?: SortOrder
     order?: SortOrder
     regMemberId?: SortOrder
     createdAt?: SortOrder
@@ -10934,7 +10934,7 @@ export namespace Prisma {
   export type CategoryMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    is_public?: SortOrder
+    isPublic?: SortOrder
     order?: SortOrder
     regMemberId?: SortOrder
     createdAt?: SortOrder
@@ -10943,7 +10943,7 @@ export namespace Prisma {
   export type CategoryMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
-    is_public?: SortOrder
+    isPublic?: SortOrder
     order?: SortOrder
     regMemberId?: SortOrder
     createdAt?: SortOrder
@@ -11807,7 +11807,7 @@ export namespace Prisma {
 
   export type CategoryCreateWithoutRegMemberInput = {
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     createdAt?: Date | string
     menus?: MenuCreateNestedManyWithoutCategoryInput
@@ -11816,7 +11816,7 @@ export namespace Prisma {
   export type CategoryUncheckedCreateWithoutRegMemberInput = {
     id?: number
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     createdAt?: Date | string
     menus?: MenuUncheckedCreateNestedManyWithoutCategoryInput
@@ -11937,7 +11937,7 @@ export namespace Prisma {
     NOT?: CategoryScalarWhereInput | CategoryScalarWhereInput[]
     id?: IntFilter<"Category"> | number
     name?: StringFilter<"Category"> | string
-    is_public?: BoolFilter<"Category"> | boolean
+    isPublic?: BoolFilter<"Category"> | boolean
     order?: IntFilter<"Category"> | number
     regMemberId?: StringFilter<"Category"> | string
     createdAt?: DateTimeFilter<"Category"> | Date | string
@@ -12360,7 +12360,7 @@ export namespace Prisma {
 
   export type CategoryCreateWithoutMenusInput = {
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     createdAt?: Date | string
     regMember: MemberCreateNestedOneWithoutCategoriesInput
@@ -12369,7 +12369,7 @@ export namespace Prisma {
   export type CategoryUncheckedCreateWithoutMenusInput = {
     id?: number
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     regMemberId: string
     createdAt?: Date | string
@@ -12470,7 +12470,7 @@ export namespace Prisma {
 
   export type CategoryUpdateWithoutMenusInput = {
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     regMember?: MemberUpdateOneRequiredWithoutCategoriesNestedInput
@@ -12479,7 +12479,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateWithoutMenusInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     regMemberId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12769,7 +12769,7 @@ export namespace Prisma {
   export type CategoryCreateManyRegMemberInput = {
     id?: number
     name: string
-    is_public?: boolean
+    isPublic?: boolean
     order?: number
     createdAt?: Date | string
   }
@@ -12801,7 +12801,7 @@ export namespace Prisma {
 
   export type CategoryUpdateWithoutRegMemberInput = {
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     menus?: MenuUpdateManyWithoutCategoryNestedInput
@@ -12810,7 +12810,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateWithoutRegMemberInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     menus?: MenuUncheckedUpdateManyWithoutCategoryNestedInput
@@ -12819,7 +12819,7 @@ export namespace Prisma {
   export type CategoryUncheckedUpdateManyWithoutRegMemberInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
-    is_public?: BoolFieldUpdateOperationsInput | boolean
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
     order?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

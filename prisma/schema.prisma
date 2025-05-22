@@ -57,7 +57,7 @@ model MemberRole {
 model Category {
   id          Int      @id @default(autoincrement())
   name        String
-  is_public   Boolean  @default(false) @map("is_public")
+  isPublic   Boolean  @default(false) @map("is_public")
   order      Int     @default(0)
   regMemberId String   @map("reg_member_id")
   createdAt   DateTime @default(now()) @map("created_at")

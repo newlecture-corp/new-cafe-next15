@@ -148,7 +148,7 @@ exports.Prisma.MemberRoleScalarFieldEnum = {
 exports.Prisma.CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  is_public: 'is_public',
+  isPublic: 'isPublic',
   order: 'order',
   regMemberId: 'regMemberId',
   createdAt: 'createdAt'

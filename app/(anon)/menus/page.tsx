@@ -1,12 +1,12 @@
 import { GetMenuListDto } from "@/application/usecases/menu/dto/GetMenuListDto";
 import styles from "./page.module.scss";
 import Image from "next/image";
-// import LikeButton from "./components/LikeButton";
 import FilterForm from "./components/FilterForm";
 import Pager from "../components/Pager";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { toggleLike } from "./actions";
+import { fetchWithAuthServer } from "@/lib/fetchWithAuthServer";
 
 const {
 	["menus-box"]: menusBox,
@@ -26,33 +26,60 @@ const List = async ({
 	params: Promise<{ params: string }>;
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
+	console.log("=== /menus/page.tsx ===");
 	console.log("param object :", await params);
 	console.log("query search param object :", await searchParams);
 
+	// ====================================================
+	// 사용자 입력 쿼리 전체 이름 매핑
+	// ----------------------------------------------------
 	const temp = await searchParams;
 	const query = {
 		page: temp.p,
 		categoryId: temp.c,
 		searchWord: temp.s,
 	};
-	console.log("query object :", query);
-	const { page, categoryId, searchWord } = query;
 
+	// =====================================================
+	// url을 동적으로 생성하기 위한 코드
+	// -----------------------------------------------------
 	let url = `${process.env.NEXT_PUBLIC_API_URL}/menus`;
-	const queryString = [];
+	{
+		const { page, categoryId, searchWord } = query;
 
-	if (page) queryString.push(`p=${page}`);
-	if (categoryId) queryString.push(`c=${categoryId}`);
-	if (searchWord) queryString.push(`s=${searchWord}`);
+		const queryString = [];
 
-	if (queryString.length > 0) {
-		url += `?${queryString.join("&")}`;
+		if (page) queryString.push(`p=${page}`);
+		if (categoryId) queryString.push(`c=${categoryId}`);
+		if (searchWord) queryString.push(`s=${searchWord}`);
+
+		if (queryString.length > 0) {
+			url += `?${queryString.join("&")}`;
+		}
 	}
 
 	console.log("url", url);
 
-	const res = await fetch(url);
-	const data: GetMenuListDto = await res.json();
+	// ====================================================
+	// data fetching
+	// ----------------------------------------------------
+	// 노트 : 이 코드는 서버에서 실행되기 때문에 credentials:"include" 옵션으로 fetch에 쿠키를 포함시킬 수 없음.
+	// 왜냐하면 쿠키는 서버에 저장되는 값이 아니며 전달 받는 값이기 때문이다.
+	// 따라서 api에 인증 토큰이 필요하다면 클라이언트가 전달한 쿠키를 직접 포함해야 한다.
+	let data: GetMenuListDto;
+	{
+		// const cookieStore = await cookies();
+		// const sessionToken = cookieStore.get("next-auth.session-token");
+
+		// const res = await fetch(url, {
+		// 	headers: {
+		// 		Authorization: `Bearer ${sessionToken?.value}`,
+		// 	},
+		// });
+		// 위의 코드를 /lib/fetchWithAuthServer.ts로 집중화 ==================
+		const res = await fetchWithAuthServer(url);
+		data = await res.json();
+	}
 
 	return (
 		<Suspense key={url} fallback={<Loading />}>
