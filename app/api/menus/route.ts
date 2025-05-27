@@ -1,7 +1,8 @@
 import { GetMenuListQueryDto } from "@/application/usecases/menu/dto/GetMenuListQueryDto";
 import { GetMenuListUsecase } from "@/application/usecases/menu/GetMenuListUsecase";
-import { MenuViewRepository } from "@/domain/repositories/MenuViewRepository";
-import { PrMenuViewRepository } from "@/infra/repositories/prisma/PrMenuViewRepository";
+import { MenuRepository } from "@/domain/repositories/MenuRepository";
+import { PrMenuRepository } from "@/infra/repositories/prisma/PrMenuRepository";
+
 import { getToken } from "next-auth/jwt";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest) {
 		);
 
 		// DI (Dependency Injection) - 의존성 주입
-		const repository: MenuViewRepository = new PrMenuViewRepository();
+		const repository: MenuRepository = new PrMenuRepository();
 		const usecase = new GetMenuListUsecase(repository);
 
 		// Usecase(업무로직) 실행

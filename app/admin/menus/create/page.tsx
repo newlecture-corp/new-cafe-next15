@@ -7,8 +7,11 @@ import { fetchWithAuthClient } from "@/lib/fetchWithAuthClient";
 import Link from "next/link";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function MenuCreatePage() {
+	const router = useRouter();
+
 	// 카테고리 목록 조회하기 =================================
 	const [categories, setCategories] = useState<CategoryDto[]>([]);
 	{
@@ -34,7 +37,7 @@ export default function MenuCreatePage() {
 	// 메뉴 등록하기 =========================================
 	// - 폼데이터 상태변수들
 	const [formData, setFormData] = useState({
-		category: "",
+		categoryId: "",
 		korName: "",
 		engName: "",
 		price: "",
@@ -51,33 +54,66 @@ export default function MenuCreatePage() {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
-	// - 폼 제출 핸들러
-	const handleSubmit = async (e: React.FormEvent) => {
+	// - 파일을 포함하는 폼 제출 핸들러
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		let data: CreatedMenuDto;
-		{
-			try {
-				const res = await fetchWithAuthClient("/api/admin/menus", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(formData),
-				});
-				if (!res.ok) {
-					throw new Error("Failed to submit form");
-				}
+		const form = e.currentTarget;
+		const formDataObj = new FormData(form);
 
-				data = await res.json();
-				console.log("created menu : ", data);
-				alert("메뉴가 성공적으로 등록되었습니다.");
-			} catch (error) {
-				console.error(error);
-				alert("메뉴 등록 중 오류가 발생했습니다.");
+		// categoryId 필드가 formData의 category와 일치하도록 보정
+		if (!formDataObj.get("categoryId")) {
+			formDataObj.set("categoryId", formData.categoryId);
+		}
+
+		try {
+			const res = await fetchWithAuthClient("/api/admin/menus", {
+				method: "POST",
+				body: formDataObj,
+			});
+			if (!res.ok) {
+				throw new Error("Failed to submit form");
 			}
+
+			const data: CreatedMenuDto = await res.json();
+			console.log("created menu : ", data);
+			alert("메뉴가 성공적으로 등록되었습니다.");
+			// Next.js의 useRouter를 사용해 이동
+
+			router.push("../menus");
+		} catch (error) {
+			console.error(error);
+			alert("메뉴 등록 중 오류가 발생했습니다.");
 		}
 	};
+
+	// // - 파일을 포함하지 않은 경우의 폼 제출 핸들러
+	// const handleSubmit = async (e: React.FormEvent) => {
+	// 	e.preventDefault();
+
+	// 	let data: CreatedMenuDto;
+	// 	{
+	// 		try {
+	// 			const res = await fetchWithAuthClient("/api/admin/menus", {
+	// 				method: "POST",
+	// 				headers: {
+	// 					"Content-Type": "application/json",
+	// 				},
+	// 				body: JSON.stringify(formData),
+	// 			});
+	// 			if (!res.ok) {
+	// 				throw new Error("Failed to submit form");
+	// 			}
+
+	// 			data = await res.json();
+	// 			console.log("created menu : ", data);
+	// 			alert("메뉴가 성공적으로 등록되었습니다.");
+	// 		} catch (error) {
+	// 			console.error(error);
+	// 			alert("메뉴 등록 중 오류가 발생했습니다.");
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<main>
@@ -106,8 +142,9 @@ export default function MenuCreatePage() {
 								<span>카테고리</span>
 								<select
 									name="categoryId"
-									value={formData.category}
+									value={formData.categoryId}
 									onChange={handleChange}
+									required
 								>
 									<option value="">선택</option>
 
@@ -121,12 +158,19 @@ export default function MenuCreatePage() {
 						</div>
 						<div>
 							<label>
+								<span>대표 이미지</span>
+								<input type="file" name="image" accept="image/*" />
+							</label>
+						</div>
+						<div>
+							<label>
 								<span>한글명</span>
 								<input
 									type="text"
 									name="korName"
 									value={formData.korName}
 									onChange={handleChange}
+									required
 								/>
 							</label>
 						</div>
@@ -138,6 +182,7 @@ export default function MenuCreatePage() {
 									name="engName"
 									value={formData.engName}
 									onChange={handleChange}
+									required
 								/>
 							</label>
 						</div>
@@ -145,10 +190,11 @@ export default function MenuCreatePage() {
 							<label>
 								<span>가격</span>
 								<input
-									type="text"
+									type="number"
 									name="price"
 									value={formData.price}
 									onChange={handleChange}
+									required
 								/>
 							</label>
 						</div>

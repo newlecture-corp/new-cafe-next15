@@ -9,7 +9,7 @@ import { MenuView } from "@/domain/entities/admin/MenuView";
 import { MenuRepository } from "@/domain/repositories/admin/MenuRepository";
 import { MenuViewCriteria } from "@/domain/repositories/criteria/admin/MenuViewCriteria";
 
-export class PrAdminMenuRepository implements MenuRepository {
+export class PrMenuRepository implements MenuRepository {
 	private prisma: PrismaClient;
 
 	constructor() {
@@ -56,7 +56,7 @@ export class PrAdminMenuRepository implements MenuRepository {
 		// 1. 쿼리 조건을 디스트럭처링 해서
 		const { sortField, ascending, offset, limit } = criteria;
 
-		// 2. 필터 조건 설정하고
+		// 2. 필터 조건을을 설정하고
 		const where: Prisma.MenuWhereInput = this.getWhereClause(criteria);
 
 		// 2-1. 페이지네이션 조건 설정하기
@@ -70,7 +70,7 @@ export class PrAdminMenuRepository implements MenuRepository {
 			  }
 			: undefined;
 
-		// 3. 쿼리를 실행 한 후에
+		// 3. 쿼리를 실행한 후에
 		const menus: Menu[] = await this.prisma.menu.findMany({
 			where,
 			skip,

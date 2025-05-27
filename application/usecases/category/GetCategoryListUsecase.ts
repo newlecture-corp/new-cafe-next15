@@ -7,7 +7,7 @@ export class GetCategoryListUsecase {
 	constructor(private categoryRepository: CategoryRepository) {}
 
 	async execute(): Promise<CategoryListDto> {
-		// 카테고리 엔티티 목록을 가져오기
+		// 1. 데이터를 쿼리하고
 		let categories: Category[];
 		{
 			try {
@@ -29,19 +29,23 @@ export class GetCategoryListUsecase {
 			}
 		}
 
-		// 카테고리 엔티티 목록을 CategoryDto[] 배열로 변환하여 반환
-		let categoryDtos: CategoryDto[];
+		// 2. 쿼리 결과를 DTO로 변환하여 반환한다.
+		let categoryListDto: CategoryListDto;
 		{
-			categoryDtos = categories.map((category: Category) => ({
-				...category,
-			}));
+			const categoryDtos: CategoryDto[] = categories.map(
+				(category: Category) => ({
+					...category,
+				})
+			);
 
-			console.log("categoryDtos", categoryDtos);
+			categoryListDto = {
+				categories: categoryDtos,
+			} as CategoryListDto;
+
+			// console.log("categoryDtos", categoryDtos);
 		}
 
-		// CategoryListDto 객체를 생성하여 반환
-		return {
-			categories: categoryDtos,
-		} as CategoryListDto;
+		// 3. DTO 객체를 생성하여 반환
+		return categoryListDto;
 	}
 }

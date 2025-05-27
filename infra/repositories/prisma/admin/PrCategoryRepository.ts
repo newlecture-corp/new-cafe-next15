@@ -1,7 +1,7 @@
 import { CategoryView } from "@/domain/entities/admin/CategoryView";
 import { CategoryRepository } from "@/domain/repositories/admin/CategoryRepository";
 import { CategoryViewCriteria } from "@/domain/repositories/criteria/admin/CategoryViewCriteria";
-import { Category, Prisma, PrismaClient } from "@/prisma/generated";
+import { Category, Menu, Prisma, PrismaClient } from "@/prisma/generated";
 
 export class PrCategoryRepository implements CategoryRepository {
 	private prisma: PrismaClient;
@@ -21,25 +21,43 @@ export class PrCategoryRepository implements CategoryRepository {
 
 	// @ 조건에 부합하는 데이터 목록을 반환하는 메소드
 	async findViewAll(criteria?: CategoryViewCriteria): Promise<CategoryView[]> {
-		// 1. 필터 조건 설정하고
+		// 1. 쿼리 조건을 디스트럭처링해서
+		const { sortField, ascending, offset, limit } = criteria ?? {};
+
+		// 2. 필터 조건을 설정하고
 		const where: Prisma.CategoryWhereInput = this.getWhereClause(criteria);
 
-		// 2. 쿼리를 실행한 후에
-		const categories = await this.prisma.category.findMany({
-			where,
-			include: { menus: true },
-		});
+		// 2-1. 페이지네이션 조건 설정하기
+		const skip: number | undefined = offset;
+		const take: number | undefined = limit;
 
-		// 3. CategoryView로 변환해서
+		// 2-2. 정렬 조건 설정
+		let orderBy: Prisma.CategoryOrderByWithRelationInput | undefined =
+			undefined;
+		if (sortField) {
+			orderBy = {
+				[sortField]: ascending === false ? "desc" : "asc",
+			};
+		}
+
+		// 3. 쿼리를 실행한 후에에
+		const categories = (await this.prisma.category.findMany({
+			where,
+			skip,
+			take,
+			orderBy,
+			include: { menus: true },
+		})) as (Category & { menus: Menu[] })[];
+
+		// 5. CategoryView로 변환
 		const categoryViews: CategoryView[] = categories.map(
 			(category) =>
 				({
 					...category,
 					menuCount: category.menus.length,
 				} as CategoryView)
-		) as CategoryView[];
+		);
 
-		// 4. CategoryView[]로 반환하기
 		return categoryViews;
 	}
 
@@ -77,16 +95,35 @@ export class PrCategoryRepository implements CategoryRepository {
 	// @ 검색 조건을 갖는 CategoryViewCriteria를 받아서
 	// Prisma.CategoryWhereInput으로 변환해서 변환하는 메소드
 	getWhereClause(criteria?: CategoryViewCriteria): Prisma.CategoryWhereInput {
-		// 쿼리 조건을 디스트럭처링하기
-		const { name } = criteria || {};
+		if (!criteria) return {};
 
-		return {
-			...(name && {
-				name: {
-					contains: name,
-					mode: "insensitive",
-				},
-			}),
-		};
+		const { name, includeAll, includeMenu } = criteria;
+
+		const where: Prisma.CategoryWhereInput = {};
+
+		// 이름 필터링
+		if (name) {
+			where.name = {
+				contains: name,
+				mode: "insensitive",
+			};
+		}
+
+		// includeAll이 false일 때만 활성화 (예시: 비활성화된 카테고리 제외)
+		if (includeAll === false) {
+			where.isPublic = true;
+		}
+
+		// includeMenu가 true일 때만 메뉴가 1개 이상인 카테고리만
+		if (includeMenu === true) {
+			where.menus = {
+				some: {},
+			};
+		}
+
+		// sortField, ascending, offset, limit은 where 조건이 아니라 findMany 옵션에 사용됨
+		// 따라서 여기서는 처리하지 않음
+
+		return where;
 	}
 }

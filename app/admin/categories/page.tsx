@@ -8,19 +8,20 @@ import { CategoryListDto } from "@/application/usecases/admin/category/dto/Categ
 import { CategoryDto } from "@/application/usecases/admin/category/dto/CategoryDto";
 import { useSearchParams } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
+import { fetchWithAuthClient } from "@/lib/fetchWithAuthClient";
 
 // 이 컴포넌트는 클라이언트 사이드에서 렌더링됩니다.
 
 export default function CategoryListPage() {
+	// 1. 쿼리스트링 값 가져오기
 	const searchParams = useSearchParams();
-	// 쿼리스트링 값 가져오기
 	const pageParam = searchParams.get("p");
 	const sortFieldParam = searchParams.get("sf");
 	const ascendingParam = searchParams.get("asc");
 
 	const { token } = useAuthStore();
 
-	// 페이지 상태변수 초기화
+	// 2. 페이지 상태변수 선언
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [categories, setCategories] = useState<CategoryDto[]>([]);
 	const [includeAll, setIncludeAll] = useState<boolean>(false);
@@ -29,7 +30,7 @@ export default function CategoryListPage() {
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [pages, setPages] = useState<number[]>([]);
 
-	// 상태변수 초기화
+	// 3. 조건에 따른 상태변수 초기화
 	if (pageParam) setCurrentPage(Number(pageParam)); // 쿼리스트링에서 페이지 번호 가져오기
 	if (sortFieldParam) setSortField(sortFieldParam); // 쿼리스트링에서 정렬 필드 가져오기
 	if (ascendingParam) setAscending(ascendingParam === "true"); // 쿼리스트링에서 정렬 순서 가져오기
@@ -82,7 +83,7 @@ export default function CategoryListPage() {
 
 		const isChecked = e.target.checked;
 
-		// 메뉴이 이미 등록된 카테고리인 경우 비공개로 설정할 수 없음
+		// 메뉴가 이미 등록된 카테고리인 경우 비공개로 설정할 수 없음
 		const category = categories.find((category) => category.id === id);
 		if (!isChecked && category && (category.menuCount ?? 0) > 0) {
 			const confirmHide = window.confirm(
@@ -103,14 +104,16 @@ export default function CategoryListPage() {
 		// 서버에 업데이트 요청
 		async function toggleCategoryPublic() {
 			try {
-				const response = await fetch(`/api/admin/categories/${id}/is-public`, {
-					method: "PUT",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`,
-					},
-					body: JSON.stringify({ isPublic: isChecked }),
-				});
+				const response = await fetchWithAuthClient(
+					`/api/admin/categories/${id}/is-public`,
+					{
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ isPublic: isChecked }),
+					}
+				);
 
 				if (!response.ok) {
 					throw new Error("Failed to update category visibility");
