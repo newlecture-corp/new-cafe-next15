@@ -4,6 +4,7 @@ import { MenuViewCriteria } from "@/domain/repositories/criteria/admin/MenuViewC
 import { GetMenuListDto } from "./dto/GetMenuListDto";
 import { MenuRepository } from "@/domain/repositories/admin/MenuRepository";
 import { MenuView } from "@/domain/entities/admin/MenuView";
+import { MenuDto } from "./dto/MenuDto";
 
 export class GetMenuListUsecase {
 	private repository: MenuRepository;
@@ -58,10 +59,19 @@ export class GetMenuListUsecase {
 			let menuListDto: GetMenuListDto;
 			{
 				menuListDto = {
-					menus: menus.map((menu) => ({
-						...menu,
-						defaultImage: menu.defaultImage || "default.png", // 첫 번째 이미지 URL을 기본 이미지로 설정
-					})), // Menu 타입으로 변환
+					menus: menus.map(
+						(menu) =>
+							({
+								...menu,
+								defaultImage: menu.defaultImage || "default.png", // 첫 번째 이미지 URL을 기본 이미지로 설정
+								images: menu.images
+									? menu.images.map((img) => ({
+											...img,
+											id: img.id.toString(), // Convert id to string for MenuImageDto
+									  }))
+									: undefined,
+							} as MenuDto)
+					), // MenuDto 타입으로 변환
 					currentPage,
 					endPage, // 페이지당 10개 메뉴로 가정
 				} as GetMenuListDto; // GetMenuListDto 타입으로 반환 as GetMenuListDto; // 초기화

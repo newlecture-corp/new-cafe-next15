@@ -1,5 +1,6 @@
 import { GetMenuRowExUsecase } from "@/application/usecases/admin/menu/GetMenuRowExUsecase";
-import { PrAdminMenuRepository } from "@/infra/repositories/prisma/admin/PrMenuRepository";
+import { PrMenuRepository } from "@/infra/repositories/prisma/admin/PrMenuRepository";
+
 import { NextResponse } from "next/server";
 
 interface RequestParams {
@@ -14,7 +15,7 @@ export async function GET(request: Request, { params }: RequestParams) {
 		console.log("ID from params:", id); // Logging the ID for debugging
 
 		// // DI (Dependency Injection) - 의존성 주입
-		const adminMenuRepository = new PrAdminMenuRepository();
+		const adminMenuRepository = new PrMenuRepository();
 		const getMenuRowExUsecase = new GetMenuRowExUsecase(adminMenuRepository);
 
 		const menuListRowExDto = await getMenuRowExUsecase.execute(id); // Fetching the menu details using the use case

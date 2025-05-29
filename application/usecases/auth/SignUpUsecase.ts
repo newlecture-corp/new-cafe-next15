@@ -33,15 +33,15 @@ export class SignUpUsecase {
 
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		const member: Member = {
+		const member: Partial<Member> = {
 			username: username,
 			email: email,
 			password: hashedPassword,
-			image: fileName,
+			profileImage: fileName ?? null,
 		};
 
 		// Supabase 회원가입 처리
-		const newMember = await this.memberRepository.save(member);
+		const newMember = await this.memberRepository.save(member as Member);
 
 		// 회원가입 성공 시 반환할 DTO 객체 매핑 및 반환
 		return { ...newMember } as SignedUpDto;

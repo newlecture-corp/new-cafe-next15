@@ -53,7 +53,7 @@ export class LoginUsecase {
 			username: member.username,
 			email: member.email,
 			roles: roleNames,
-			image: member.image,
+			image: member.profileImage,
 			createdAt: member.createdAt,
 		};
 

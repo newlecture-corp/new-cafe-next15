@@ -1,5 +1,5 @@
 import { DeleteCategoryUsecase } from "@/application/usecases/admin/category/DeleteCategoryUsecase";
-import { SbCategoryRepository } from "@/infra/repositories/supabase/SbCategoryRepository";
+import { PrCategoryRepository } from "@/infra/repositories/prisma/admin/PrCategoryRepository";
 import { NextResponse } from "next/server";
 
 interface RequestParams {
@@ -20,7 +20,7 @@ export async function DELETE(request: Request, { params }: RequestParams) {
 		}
 
 		const deleteCategoryUsecase = new DeleteCategoryUsecase(
-			new SbCategoryRepository()
+			new PrCategoryRepository()
 		);
 
 		await deleteCategoryUsecase.execute(Number(id));

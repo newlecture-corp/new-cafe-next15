@@ -2,12 +2,12 @@ import { MenuView } from "@/domain/entities/MenuView";
 import { GetMenuListDto } from "./dto/GetMenuListDto";
 import { GetMenuListQueryDto } from "./dto/GetMenuListQueryDto";
 import { MenuViewCriteria } from "@/domain/repositories/criteria/MenuViewCriteria";
-import { MenuViewRepository } from "@/domain/repositories/MenuViewRepository";
+import { MenuRepository } from "@/domain/repositories/MenuRepository";
 
 export class GetMenuListUsecase {
-	private repository: MenuViewRepository;
+	private repository: MenuRepository;
 
-	constructor(repository: MenuViewRepository) {
+	constructor(repository: MenuRepository) {
 		this.repository = repository;
 	}
 

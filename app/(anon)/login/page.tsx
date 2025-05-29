@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { FC, FormEvent, useState } from "react";
+import React, { FC, FormEvent, useState, Suspense } from "react";
 import styles from "./page.module.scss";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -85,4 +85,11 @@ const LoginPage: FC = () => {
 	);
 };
 
-export default LoginPage;
+// page 컴포넌트에서 Suspense로 감싸서 export
+export default function Page() {
+	return (
+		<Suspense>
+			<LoginPage />
+		</Suspense>
+	);
+}

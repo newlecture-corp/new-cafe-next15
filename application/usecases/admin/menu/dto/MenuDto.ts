@@ -1,3 +1,5 @@
+import { MenuImageDto } from "./MenuImageDto";
+
 export class MenuDto {
 	constructor(
 		public id: number,
@@ -7,6 +9,9 @@ export class MenuDto {
 		public description: string | "",
 		public categoryId: number,
 		public createdAt: Date,
-		public updatedAt: Date
+		public updatedAt: Date,
+		public defaultImage: string | null = null,
+
+		public images: MenuImageDto[] = []
 	) {}
 }

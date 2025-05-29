@@ -1,13 +1,15 @@
 import { GetMenuImageListUsecase } from "@/application/usecases/admin/menu/GetMenuImageListUsecase";
 import { PrMenuImageRepository } from "@/infra/repositories/prisma/PrMenuImageRepository";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
+interface RequestParams {
+	params: Promise<{
+		id: string;
+	}>;
+}
 // GET /api/admin/menus/[id]/images
-export async function GET(
-	req: NextRequest,
-	{ params }: { params: { id: string } }
-) {
-	// 1. 슬러그로 전달한 [id] 값을 가져와서
+export async function GET(request: Request, { params }: RequestParams) {
+	// 1. URL에서 [id] 값을 추출
 	const { id } = await params;
 
 	// 2. DI (Dependency Injection) - 의존성 주입을 해서
